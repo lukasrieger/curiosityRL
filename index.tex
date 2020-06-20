@@ -8,6 +8,7 @@
 \usepackage[english,ngerman]{babel}
 \usepackage{iflang}
 \usepackage{hyperref}
+\usepackage{biblatex}
 
 
 %\usepackage{showframe}
@@ -33,6 +34,8 @@ contents={%
 
 \widowpenalty10000
 \clubpenalty10000
+
+\bibliography{references}
 
 \begin{document}
 
@@ -102,7 +105,7 @@ contents={%
 \section*{\IfLanguageName{ngerman}{Autorenschaft}{Authorship}}
 \thesisauthorship
 
-\bibliography{references}
-\bibliographystyle{plain}
+\printbibliography
+
 
 \end{document}
