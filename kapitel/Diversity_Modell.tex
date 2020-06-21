@@ -1,7 +1,7 @@
 \section{Diversity im Reinforcement Learning}
 \label{sec:diversity}
 % Ziel
-In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten erlernt, welche das Bewältigen von Aufgaben in der darauf folgenden, überwachten Phase erleichtern sollen.
+In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten erlernt, welche das Bewältigen von Aufgaben in der darauf folgenden, überwachten Phase erleichtern sollen. Dies geschieht ohne jegliche Belohnung von außen.
 
 Dieses Kapitel stützt sich zu einem Großteil auf die wissenschaftliche Arbeit \textit{Diversity is all you need: Learning skills without a reward function}\cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
 
@@ -45,7 +45,7 @@ Mathematisch wichtig für uns ist lediglich der Zusammenhang zwischen \textit{Tr
 
 % Erklärung des Algorithmus
 \subsection{Funktionsweise}
-\label{sec:howitworks}
+\label{sec:diversity_howitworks}
 \begin{figure}
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/algorithm_diayn.JPG}
 \caption{``Diversity is all you need'' Algorithmus} \label{img:diayn}

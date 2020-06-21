@@ -1,1 +1,49 @@
 \section{Curiosity und Diversity im Vergleich}
+\label{sec:comparison}
+% Bli blub Gemeinsamkeiten und Kernunterschiede folgen:
+In den folgenden Sektionen \ref{sec:comparison_theory} und \ref{sec:comparison_examples} betrachten wir zuerst einige konzeptuelle Ähnlichkeiten zwischen den in \ref{sec:Curiosity_Schmidhuber} und \ref{sec:diversity} betrachteten Ansätzen. Anschließend versuchen wir, diese anhand einiger simpler Beispiele zu verdeutlichen. 
+Es bleibt zu beachten, dass sich beide Ansätze trotz ihrer praktischen Überschneidungen vorallem in der philosophie ihrer Herangehensweise unterscheiden.
+
+\subsection{Theoretischer Vergleich}
+\label{sec:comparison_theory}
+% Maximal komprimierte Daten entsprechen maximal diversen Fähigkeiten
+
+Wie bereits in \ref{sec:Komprimierbarkeit_verbessern} erläutert, tendiert ein neugieriger Agent in Schmidhubers Theorie dazu, Regularitäten zu komprimieren und zusammenzufassen. Darauf aufbauend, versucht ein solcher Agent intern, den zu erwartenden \emph{zukünftigen} Komprimierungsfortschritt zu maximieren. 
+In Kombination mit der auf auf Neugierde basierenden Aktionsselektion, wie in \ref{sec:Aktion_selektion} beschrieben, führt ein Agent also tendenziell solche Aktionen aus, welche es dem Kompressor in zukunft erlauben, die Historie des Agenten besser zu beschrieben. 
+Auf Basis der Definition von subjektiver Interessantheit, wie sie in \ref{sec:Beauty_und_Curiosity} beschrieben ist, gilt im Umkehrschluss aber auch, dass sich der Agent von nicht mehr weiter komprimierbaren Beobachtungen abwendet und nach neuen Regelmäßigkeit kundschaftet, die als Interessant erachtet werden können.
+
+Aufgrund der in \ref{sec:diversity_howitworks} erläuterten Gründe erfolgt die Unterscheidung von Fähigkeiten im DIAYN Algorithmus nach deren besuchten Zuständen. Nichtsdestotrotz handelt es sich um eine Abfolge von Aktionen, um besagte Zustände zu durchlaufen. Es lässt sich argumentieren, dass sich in Schmidhubers neugierigen Agenten eine ähnliche Abstraktion findet. So kann ein vom Kompressor erzeugtes Symbol als Fähigkeit aufgefasst werden.
+
+\paragraph{Unabhängigkeit von externen Belohnungen}
+Eine weit auffälligere Gemeinsamkeit der beiden Ansätze ist jedoch die Unabhängigkeit von externen Belohnungen.
+
+% DIAYN:
+% - Skillfindung ohne externen Reward
+% - Verwendung der Skills in HRL funktioniert gut in sparse Reward Umgebungen
+Wie in \ref{sec:diversity} und sogar im Titel von \cite{diversity_eysenbach} bereits beschrieben findet das Erlernen von Fähigkeiten in der unüberwachten Phase ohne jeglichen externen Reward statt. Der DIAYN Algorithmus erzeugt stattdessen interne Belohnungen anhand der Unterscheidbarkeit der betrachteten Fähigkeit und ist somit nicht auf Rückmeldung der Umgebung angewiesen.
+
+Weniger intuitiv verhält es sich bei der Verwendung der erlernten Fähigkeiten. Wir betrachten hierfür deren Anwendung innerhalb eines HRL wie in \ref{sec:examplesdiversity}. Die Umgebung liefert im beschriebenen Versuchsaufbau nur spärlich Belohnungen. Bei der Betrachtung der Ergebnisse des Experiments in \ref{img:cheetah_hurdle_graph} wird deutlich, dass die Benutzung der zuvor gelernten Fähigkeiten einen großen Vorteil gegenüber anderen modernen RL Algorithmen bringt. Während diese ihren Reward kaum merklich steiern können, vergrößert sich der des DIANY Ansatzes sehr deutlich und überholt schnell die anderen Methoden.
+
+Auch auf Curiosity basierende Agenten sind in der Lage, in Umgebungen zu operieren, die kaum oder gar keine externen Belohnungen generieren. Ein Agent wendet sich in solch einer Situation schlicht der maximierung seiner internen Belohnung \(r_{int}(t)\) zu. In anderen Worten sucht ein solcher Agent in ermangelung externer Belohnungen stets nach denjenigen Aktionen, die ihm am \emph{interessantesten} erscheinen.
+
+So lässt sich erkennen, dass beide Ansätze in Umgebungen, in denen nur wenig externe Belohnungen vorhanden sind, wesentlich bessere Ergebnisse erzielen als herkömmliche RL Algorithmen und somit eine adäquate Lösung für das \emph{Sparse Reward Problem} finden. Dies ist ein wichtiger Punkt, da diese in den meisten realen Anwendungsgebieten nur spärlich oder sogar überhaupt nicht vorhanden sind.
+
+\bigspace
+
+%TODO Es lässt sich argumentieren, dass der Prozess zum Finden vielfältiger Fähigkeiten, wie in \ref{sec:diversity} beschrieben, ein ähnliches Ergebnis erzielt.
+%Während ein Agent nach Schmidhuber seine Umgebung in sequentiellen Zeitschritten erkundet, entwickeln sich beim DIAYN Algorithmus die Fähigkeiten parallel (siehe \ref{sec:diversity_howitworks}). Für die Unterscheidung werden, wie in \ref{sec:diversity_howitworks} erläutert, die durchlaufenen Zustände der Fähigkeit betrachtet. Somit entspricht eine Fähigkeit der Erkundung eines Teils der Umgebung. Da sich die Fähigkeiten maximal voneinander unterscheiden sollen, decken alle Fähigkeiten zusammen einen möglichst großen, verteilten Bereich des Zustandsraumes ab. So lässt sich argumentieren, dass sowohl ein Agent, der nach dem Prinzip von Schmidhuber agiert, als auch der DIAYN Algorithmus am Ende einen möglichst großen Teil der Umgebung durchlaufen haben.
+% Ein zentrales Problem im RL stellt \textit{Exploration-Exploitation Dilemma} dar.
+
+% benötigen keine/wenige external rewards
+
+% Ermöglichen das Lernen von Fähigkeiten, welche erst zu einem späteren Zeitpunkt nützlich sein könnten
+
+% Stellen gleichmäßige Erkundung des Zustandsraums sicher (in lokalem Optimum festzustecken unwahrscheinlicher -> Finden des globalen Optimums wahrscheinlicher)
+
+\subsection{Beispiele}
+\label{sec:comparison_examples}
+Am Anfang war das Licht. Dann schuf der Herr Prof. Dr. Claudia Linnhoff-Popien. Er schuf sie als Multi-Agenten-System.
+Und er sah dass es gut war.
+Ende.
+Bitte ne 1.0 danke.
+
