@@ -70,7 +70,7 @@ Es werden also genau solche Sequenzen an Aktionen vom Agenten ausgewählt, welch
 Die Abschnitte \ref{sec:Komprimierbarkeit_verbessern} und \ref{sec:Beauty_und_Curiosity} fokussieren sich hauptsächlich auf die theoretischen Konzepte der \emph{Komprimierung} von Daten und davon ausgehend, die Konzepte der \emph{subjektiven Schönheit} und \emph{subjektiven Interessantheit}.
 Die folgende Sektion befasst sich im Gegenzug mit Schmidhubers formalisierten Implementierungen dieser Konzepte.
 
-Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeitabschnitten \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
+Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
 In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
 Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen realen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reale Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzen} 
 \begin{equation}
@@ -104,5 +104,5 @@ wobei \(f\) jeweils reale Paare auf selbige abbildet. \cite[p.~19]{curiosity_sch
 \textbf{TODO: Was bedeutet das? Beispiel für f nennen. (f(a,b) = a - b)}
 
 \textbf{TODO: A.5 ist super wichtig. Da erklärt er genau wie sich der interne Reward ergibt.}
-
 \subsubsection{Auswahl von zielführenden Aktionen}
+
