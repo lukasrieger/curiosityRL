@@ -74,10 +74,14 @@ Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervall
 In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
 Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen realen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reale Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzen} 
 \begin{equation}
-  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \mid h(\leq t)\right]  
+  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \bigl\lvert h(\leq t)\right]  
 \end{equation}
 wobei \(r(t)\) einen zusätzlichen realen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
 In diesem Kontext stellt \(h(t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
+
+Der Belohnungswert \(r(t)\) kann laut Schmidhuber noch weiter in eine Form von \(r(t) = g(r_{ext}(t),r_{int}(t))\) aufgeteilt werden \cite{curiosity_schmidhuber}.
+Die Funktion \(g\) bildet hierbei die beiden reellen Werte \(r_{ext}\) und \(r_{int}\) auf einen weiteren reellen Wert ab. In diesem Kontext entspricht \(r_{ext}\) dem traditionell verwendeten Wert der \emph{externen} Belohnung, welche durch die Umgebung generiert wird und beispielsweise entsteht, wenn der Agent ein gegebenes Ziel erreicht. 
+Da sich der Fokus allerdings haupttsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man inm folgenden zum einfacheren Verständniss stets von \(r_{ext}(t) = 0\) ausgehen.
 
 \paragraph{Leistungsmessung eines Kompressors}
 Zur Bewertung eines Kompressors \(p\) der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
@@ -105,4 +109,3 @@ wobei \(f\) jeweils reale Paare auf selbige abbildet. \cite[p.~19]{curiosity_sch
 
 \textbf{TODO: A.5 ist super wichtig. Da erklärt er genau wie sich der interne Reward ergibt.}
 \subsubsection{Auswahl von zielführenden Aktionen}
-

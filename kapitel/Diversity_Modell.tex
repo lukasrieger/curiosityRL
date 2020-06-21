@@ -1,7 +1,7 @@
 \section{Diversity im Reinforcement Learning}
 \label{sec:diversity}
 % Ziel
-In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten erlernt, welche das Bewältigen von Aufgaben in der darauf folgenden, überwachten Phase erleichtern sollen.
+In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten erlernt, welche das Bewältigen von Aufgaben in der darauf folgenden, überwachten Phase erleichtern sollen. Dies geschieht ohne jegliche Belohnung von außen.
 
 Dieses Kapitel stützt sich zu einem Großteil auf die wissenschaftliche Arbeit \textit{Diversity is all you need: Learning skills without a reward function}\cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
 
@@ -45,7 +45,7 @@ Mathematisch wichtig für uns ist lediglich der Zusammenhang zwischen \textit{Tr
 
 % Erklärung des Algorithmus
 \subsection{Funktionsweise}
-\label{sec:howitworks}
+\label{sec:diversity_howitworks}
 \begin{figure}
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/algorithm_diayn.JPG}
 \caption{``Diversity is all you need'' Algorithmus} \label{img:diayn}
@@ -55,12 +55,12 @@ Das selbstständige Erlernen von brauchbaren Fähigkeiten, so wie in \cite{diver
 
 \smallspace
 
-Unterschiedliche Fähigkeiten sollten andere Zustände besuchen, sodass ihre Unterscheidbarkeit gewährleistet ist.
+(1) Unterschiedliche Fähigkeiten sollten andere Zustände besuchen, sodass ihre Unterscheidbarkeit gewährleistet ist.
 
 %TODO "Paper"
-Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel. Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt.
+(2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel. Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt.
 
-Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Fähigkeiten mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
+(3) Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Fähigkeiten mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
 
 \smallspace
 
@@ -93,7 +93,99 @@ In \eqref{eq:objective_2} wurden die Entropien nach \eqref{eq:entropy_2} und \eq
 
 \smallspace
 
+Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Aufgrund der implementierten Diversity müssen jedoch Fähigkeiten existieren, welche sich stark von den unbrauchbaren unterscheiden. So ist es intuitiv einleuchtend, dass es sich hierbei um sinnvolle Fähigkeiten handelt.
 
+%\newpage
 % Beispiele
-\subsection{Beispiele}
+\subsection{Experimente und Beispiele}
 \label{sec:examplesdiversity}
+\begin{figure}[h]
+\begin{subfigure}{0.41\textwidth}
+\includegraphics[width=0.95\textwidth]{images/example_diayn_1.JPG}
+\caption{Zweidimensionale Navigation} \label{img:diayn_ex1}
+\end{subfigure}
+\begin{subfigure}{0.59\textwidth}
+\includegraphics[width=0.95\textwidth, right]{images/example_diayn_2.JPG}
+\caption{Überlagernde Fähigkeiten} \label{img:diayn_ex2}
+\end{subfigure}
+\caption{TODO} \label{img:diayn_ex}
+\source{\cite{diversity_eysenbach}}
+\end{figure}
+
+Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum \ref{img:diayn_ex1}. Hier ist sehr anschaulich zu erkennen, wie die farblich kodierten Fähigkeiten unterschiedliche Zustandsräume abdecken.
+
+Einen Schritt weiter gedacht zeigt das Beispiel \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
+
+\smallspace
+
+% WICHTIG
+In beiden Beispielen ist gut zu erkennen, wie sich die Fähigkeiten gegenseitig ``abstoßen'' und so automatisch ein Großteil des Zustandsraums abgedeckt wird. Die erkundeten Zustände liegen außerdem gleichmäßig über dem Zustandsraum verteilt.
+
+\smallspace
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth, keepaspectratio=true, center]{images/cheetah_image.JPG}
+\caption{Experiment ``Half Cheetah''} \label{img:cheetah_ex}
+\source{\cite{diversity_web}}
+\end{figure}
+
+Interessanter wird es bei den komplexeren Versuchsaufbauten. Wir betrachten im Folgenden den vom Paper \cite{diversity_eysenbach} als ``Half Cheetah'' betitelten Agenten. Hierbei handelt es sich um ein hundartiges, zweidimensionales Wesen, welches die Kontrolle über sein Vorder- und Hinterbein besitzt (siehe \ref{img:cheetah_ex}).
+
+Ohne jegliche externe Belohnung hat dieser Agent gelernt, nach vorne und hinten zu rennen beziehungsweise zu gehen. Außerdem besitzt er die Fähigkeit, einen Vorwärtssalto zu machen. Wir empfehlen zu besseren Veranschaulichung die Einsicht der Videos auf \cite{diversity_web}.
+
+Eine Reward-Funktion, welche ein solches Verhalten hervorruft, manuell zu definieren ist nicht einfach.
+
+\subsection{Verwendung der gelernten Fähigkeiten}
+\label{sec:diversityusage}
+Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde stellt sich nun die Frage, wie sich diese effektiv nutzen lässt.
+
+\smallspace
+
+\begin{figure}[h]
+\begin{subfigure}{0.6\textwidth}
+\includegraphics[width=0.8\textwidth, keepaspectratio=true, right]{images/cheetah_rewards.JPG}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=0.5\textwidth, keepaspectratio=true, left]{images/cheetah_rewards_exp.JPG}
+\end{subfigure}
+\caption{Policy Initialisierung} \label{img:cheetah_rewards}
+\source{\cite{diversity_eysenbach}}
+\end{figure}
+
+\cite{diversity_eysenbach} führt hier als erstes an, dass der DIAYN Algorithmus als ein Vortraining genutzt werden kann. Danach extrahiert man die Fähigkeit mit dem größten Reward und passt entsprechend die Initialgewichte der eigentlichen Policy an. \ref{img:cheetah_rewards} zeigt für das Beispiel des Half Cheetahs, dass sich bei Initialisierung mit einre vorgelernten Fähigkeit (blaue Linie) schneller größere Rewards erzielen lassen als bei einer zufälligen Initialisierung (orangene Linie).
+
+\smallspace
+
+Für uns interessanter ist allerdings die Verwendung für Hierarchisches Reinforcement Learning (HRL). 
+
+Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus mehreren Schichten besteht. Jede Ebene kontrolliert hierbei ein andere temporäre Abstraktionsebene. Dies ermöglicht es dem Agenten, nicht nur Basisoperationen auszuführen, sondern auch komplexere Aktionen wie zum Beispiel Sequenzen von Operationen einer niedrigeren Ebene.
+
+\smallspace
+
+\begin{figure}[h]
+\begin{subfigure}{0.38\textwidth}
+\includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle_image.JPG}
+\caption{} \label{img:cheetah_hurdle_img}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle.JPG}
+\caption{} \label{img:cheetah_hurdle_graph}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle_exp.JPG}
+\end{subfigure}
+\caption{DIAYN für HRL} \label{img:cheetah_hurdle}
+\source{\cite{diversity_eysenbach}}
+\end{figure}
+
+Laut \cite{diversity_eysenbach} eignet sich DIAYN hervorrangend als Grundstein für HRL. Für ein Experiment diesbezüglich betrachten wir wieder den Half Cheetah. Dieser hat nun die Aufgabe, über Hürden zu springen (siehe \ref{img:cheetah_hurdle_img}) und erhält Rewards für deren überwinden.
+
+Um die gelernten Fähigkeiten für HRL zu benutzen, wird DIAYN um einen ``meta-controller'' erweitert welcher kontrolliert, welche 10 Fähigkeiten jeweils als nächstes ausgeführt werden.
+
+Das Experiment wird außerdem mit aktuellen Reinforcement Learning Algorithmen (VIME, TRPO und SAC) durchgeführt.
+
+Wie die Grafik \ref{img:cheetah_hurdle_graph} zeigt, schneiden diese im Experiment sehr schlecht ab und es gibt quasi keine merkliche Steigerung des Rewards. Im Gegensatz dazu zeigt der Ansatz mit dem DIAYN Algorithmus schnell deutliche Forschritte und übertrifft merklich die anderen.
+
+Aufgrund der Knappheit von externen Rewards gestaltet sich diese Aufgabe extrem schwierig für traditionelle RL Algorithmen. Diese müssen quasi zufällig eine Hürde übersteigen, um eine Belohnung von außen zu bekommen.
+
+Dies zeigt nach \cite{diversity_eysenbach}, dass das eigenständige Lernen von Fähigkeiten einen effektiven Mechanismus bereit stellt, um bei Herausforderungen beim Erkunden und mit geringem externen Reward Lernerfolge zu erzielen.
