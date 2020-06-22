@@ -3,8 +3,6 @@
 \label{sec:Curiosity_Schmidhuber}
 
 \subsection{Grundlagen des Curiosity Modells}
-
-\subsubsection{Grundlegende Prinzipien}
 \label{sec:Grundlegende_Prinzipien}
 
 Um Schmidhubers System verstehen zu können, ist es wichtig, zuerst einige zentrale Grundbegriffe zu definieren.
@@ -73,7 +71,7 @@ Die folgende Sektion befasst sich im Gegenzug mit Schmidhubers formalisierten Im
 Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
 In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
 Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen realen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reale Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzen} 
-\begin{equation}
+\begin{equation} \label{eq:objective_curiosity}
   u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \bigl\lvert h(\leq t)\right]  
 \end{equation}
 wobei \(r(t)\) einen zusätzlichen realen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
@@ -84,6 +82,7 @@ Die Funktion \(g\) bildet hierbei die beiden reellen Werte \(r_{ext}\) und \(r_{
 Da sich der Fokus allerdings haupttsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man inm folgenden zum einfacheren Verständniss stets von \(r_{ext}(t) = 0\) ausgehen.
 
 \paragraph{Leistungsmessung eines Kompressors}
+\label{sec:Kompressor_Leistung}
 Zur Bewertung eines Kompressors \(p\) der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
 \begin{equation}
   C_l(p,h(\leq t)) = l(p)  
@@ -103,9 +102,27 @@ Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion au
 \begin{equation}
   r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right]  
 \end{equation}
-wobei \(f\) jeweils reale Paare auf selbige abbildet. \cite[p.~19]{curiosity_schmidhuber}
+wobei \(f\) jeweils reale Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)). \cite[p.~19]{curiosity_schmidhuber}
 
-\textbf{TODO: Was bedeutet das? Beispiel für f nennen. (f(a,b) = a - b)}
+\subsubsection{Agent und Kompressor in Wechselwirkung}
 
-\textbf{TODO: A.5 ist super wichtig. Da erklärt er genau wie sich der interne Reward ergibt.}
-\subsubsection{Auswahl von zielführenden Aktionen}
+Aufbauend auf den bisher genannten Prinzipien von Schmidhubers neugierigen Agenten, kann nun ein informeller Algorithmus beschrieben werden, der das (in diesem Fall asynchrone) Zusammenspiel zwischen dem Controller des Agenten, also dem aktiv agierenden Teil, und dem Kompressor aufzeigt.
+
+Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Controller zum Zeitpunkt \(t\).
+
+\paragraph{Controller:} Solange für  \(t\) gilt \(1 \leq t \leq T\): 
+\begin{enumerate}
+  \item Der aktuelle Controller \(s(t)\) nutzt teile der Historie \(h(t)\) um eine Aktion \(y(t+1)\) auszuführen.
+  \item Beobachte die Eingabe \(x(t+1)\).
+  \item Prüfe, ob der asynchron laufende Kompressor eine interne Belohnung \(r_{int}(t+1)\) größer Null generiert hat. Andernfalls, setze \(r_{int}(t+1) = 0\).
+  \item Der Reinforcement Learning Algorithmus des Controllers kann nun die Historie \(h(t+1)\) zusammen mit \(r_{int}(t+1)\) nutzen. um einen neuen Controller \(s(t+1)\) zu erhalten, der wiederum die zu erwartende \emph{Nützlichkeit} maximiert, wie in \eqref{eq:objective_curiosity} beschrieben.
+\end{enumerate}
+
+\paragraph{Kompressor:} Wir nehmen an, dass \(p_{new}\) zu Beginn dem initialen Kompressor entspricht. Für jeden Zeitschritt \(t\) durchläuft der Kompressor somit:
+\begin{enumerate}
+  \item Setze \(p_{old} = p_{new}\). Setze zudem \(h_{old} = h(\leq t)\). \(h_{old}\) entspricht also der Historie am aktuellen Zeitpunkt \(t\).
+  \item Wende Kompressor \(p_{old}\) auf \(h_{old}\)) an und berechne, Sektion \ref{sec:Kompressor_Leistung} entsprechend, \(C(p_{old},h_{old})\). Gerade diese Schritt kann unter Umständen sehr zeitaufwändig sein.
+  \item Wende nun einen, dem jeweiligen Agentenziel entsprechenden, Algorithmus an, um einen besseren Kompressor \(p_{new}\) auf Basis von \(h_{old}\) zu generieren. In diesem Schritt ist zu beachten, dass \(p_{new}\) nicht zwingend \emph{optimal} sein muss.
+  \item Wende, wie bereits in Schritt 2, \(p_{new}\) auf \(h_{old}\) an, um \(C(p_{new},h_{old})\) zu erhalten.
+  \item Gegeben dem aktuellen Zeitpunkt \(\tau\), berechne \begin{equation} r_{int}(\tau) = f \left[C(p_{old},h_{old}),C(p_{new},h_{old})\right] \end{equation}
+\end{enumerate} \cite[p.~20]{curiosity_schmidhuber}
