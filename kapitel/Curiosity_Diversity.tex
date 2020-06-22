@@ -2,17 +2,21 @@
 \label{sec:comparison}
 % Bli blub Gemeinsamkeiten und Kernunterschiede folgen:
 In den folgenden Sektionen \ref{sec:comparison_theory} und \ref{sec:comparison_examples} betrachten wir zuerst einige konzeptuelle Ähnlichkeiten zwischen den in \ref{sec:Curiosity_Schmidhuber} und \ref{sec:diversity} betrachteten Ansätzen. Anschließend versuchen wir, diese anhand einiger simpler Beispiele zu verdeutlichen. 
-Es bleibt zu beachten, dass sich beide Ansätze trotz ihrer praktischen Überschneidungen vorallem in der philosophie ihrer Herangehensweise unterscheiden.
+Es bleibt zu beachten, dass sich beide Ansätze trotz ihrer praktischen Überschneidungen vorallem in der Philosophie ihrer Herangehensweise unterscheiden.
 
 \subsection{Theoretischer Vergleich}
 \label{sec:comparison_theory}
 % Maximal komprimierte Daten entsprechen maximal diversen Fähigkeiten
 
 Wie bereits in \ref{sec:Komprimierbarkeit_verbessern} erläutert, tendiert ein neugieriger Agent in Schmidhubers Theorie dazu, Regularitäten zu komprimieren und zusammenzufassen. Darauf aufbauend, versucht ein solcher Agent intern, den zu erwartenden \emph{zukünftigen} Komprimierungsfortschritt zu maximieren. 
-In Kombination mit der auf auf Neugierde basierenden Aktionsselektion, wie in \ref{sec:Aktion_selektion} beschrieben, führt ein Agent also tendenziell solche Aktionen aus, welche es dem Kompressor in zukunft erlauben, die Historie des Agenten besser zu beschrieben. 
+In Kombination mit der auf auf Neugierde basierenden Aktionsselektion, wie in \ref{sec:Beauty_und_Curiosity} beschrieben, führt ein Agent also tendenziell solche Aktionen aus, welche es dem Kompressor in zukunft erlauben, die Historie des Agenten besser zu beschrieben. 
 Auf Basis der Definition von subjektiver Interessantheit, wie sie in \ref{sec:Beauty_und_Curiosity} beschrieben ist, gilt im Umkehrschluss aber auch, dass sich der Agent von nicht mehr weiter komprimierbaren Beobachtungen abwendet und nach neuen Regelmäßigkeit kundschaftet, die als Interessant erachtet werden können.
 
-Aufgrund der in \ref{sec:diversity_howitworks} erläuterten Gründe erfolgt die Unterscheidung von Fähigkeiten im DIAYN Algorithmus nach deren besuchten Zuständen. Nichtsdestotrotz handelt es sich um eine Abfolge von Aktionen, um besagte Zustände zu durchlaufen. Es lässt sich argumentieren, dass sich in Schmidhubers neugierigen Agenten eine ähnliche Abstraktion findet. So kann ein vom Kompressor erzeugtes Symbol als Fähigkeit aufgefasst werden.
+So erzeugt der Agent auf Dauer unterschiedliche Gruppierungen von Beobachtungen, welche sich nicht weiter zusammenfassen lassen. Distinkte \emph{Symbole} liegen also so weit voneinander entfernt, dass sie keine gemeinsamen Regelmäßigkeiten aufweisen.
+
+Besagte Beobachtungen enthalten bekanntlich Zustände, Aktionen und Belohnungen. In \ref{sec:diversity_howitworks} wird erläutert, dass die Unterscheidung der Fähigkeiten im DIAYN Algorithmus nach deren besuchten Zuständen erfolgt. Nichtsdestotrotz handelt es sich um eine Abfolge von Aktionen, um besagte Zustände zu durchlaufen. Der in \ref{sec:diversity} beschriebene wichtigste Grundsatz der erlernten Skills ist, dass diese möglichst vielfältig, also maximal unterschiedlich sind. Es lässt sich also argumentieren, dass die Komprimierung von Beobachtungen nach Schmidhuber einen ähnlichen Effekt hat wie das erlernen von vielfältigen Fähigkeiten.
+
+%dass sich in Schmidhubers neugierigen Agenten eine ähnliche Abstraktion findet. So kann ein vom Kompressor erzeugtes Symbol als Fähigkeit aufgefasst werden.
 
 \paragraph{Unabhängigkeit von externen Belohnungen}
 Eine weit auffälligere Gemeinsamkeit der beiden Ansätze ist jedoch die Unabhängigkeit von externen Belohnungen.
@@ -26,7 +30,7 @@ Weniger intuitiv verhält es sich bei der Verwendung der erlernten Fähigkeiten.
 
 Auch auf Curiosity basierende Agenten sind in der Lage, in Umgebungen zu operieren, die kaum oder gar keine externen Belohnungen generieren. Ein Agent wendet sich in solch einer Situation schlicht der maximierung seiner internen Belohnung \(r_{int}(t)\) zu. In anderen Worten sucht ein solcher Agent in ermangelung externer Belohnungen stets nach denjenigen Aktionen, die ihm am \emph{interessantesten} erscheinen.
 
-So lässt sich erkennen, dass beide Ansätze in Umgebungen, in denen nur wenig externe Belohnungen vorhanden sind, wesentlich bessere Ergebnisse erzielen als herkömmliche RL Algorithmen und somit eine adäquate Lösung für das \emph{Sparse Reward Problem} finden. Dies ist ein wichtiger Punkt, da diese in den meisten realen Anwendungsgebieten nur spärlich oder sogar überhaupt nicht vorhanden sind.
+So lässt sich erkennen, dass beide Ansätze in Environments, in denen nur wenig externe Belohnungen vorhanden sind, wesentlich bessere Ergebnisse erzielen als herkömmliche RL Algorithmen und somit eine adäquate Lösung für das \emph{Sparse Reward Problem} finden. Dies ist ein wichtiger Punkt, da Rewards in den meisten realen Anwendungsgebieten nur spärlich oder sogar überhaupt nicht vorhanden sind.
 
 \bigspace
 
@@ -39,7 +43,3 @@ So lässt sich erkennen, dass beide Ansätze in Umgebungen, in denen nur wenig e
 % Ermöglichen das Lernen von Fähigkeiten, welche erst zu einem späteren Zeitpunkt nützlich sein könnten
 
 % Stellen gleichmäßige Erkundung des Zustandsraums sicher (in lokalem Optimum festzustecken unwahrscheinlicher -> Finden des globalen Optimums wahrscheinlicher)
-
-\subsection{Beispiele}
-\label{sec:comparison_examples}
-
