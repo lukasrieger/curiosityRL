@@ -1,18 +1,20 @@
 \section{Diversity im Reinforcement Learning}
 \label{sec:diversity}
 % Ziel
-In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten erlernt, welche das Bewältigen von Aufgaben in der darauf folgenden, überwachten Phase erleichtern sollen. Dies geschieht ohne jegliche Belohnung von außen.
+In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten (\textit{Skills}) erlernt, welche das Bewältigen von Aufgaben in der darauffolgenden, überwachten Phase erleichtern sollen. Dieser Prozess geschieht ohne jegliche Belohnung von außen.
 
-Dieses Kapitel stützt sich zu einem Großteil auf die wissenschaftliche Arbeit \textit{Diversity is all you need: Learning skills without a reward function}\cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
+Dieses Kapitel stützt sich zu einem Großteil auf \textit{Diversity is all you need: Learning skills without a reward function} von \citeauthor{diversity_eysenbach} \cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
 
 % Grundlegende Begriffe
 \subsection{Klärung wichtiger Begriffe aus der Informationstheorie}
 \label{sec:informationtheory}
 Im Folgenden werden Begriffe aus der Informationstheorie verwendet, welche es zunächst zu klären gilt. Wir betrachten \textit{Entropie} und \textit{Transinformation} nach \cite{elements_cover} und \cite{information_werner}.
 
-\smallspace
+\paragraph{Entropie}
 
-Die \textit{Entropie} beschreibt in der Informationstheorie den mittleren Informationsgehalt bzw. die Ungewissheit einer Quelle. Ist beispielsweise bei einer Ereignismenge jedes Ereignis gleich wahrscheinlich, so ist die Ungewissheit maximal \cite{information_werner}.
+Die Entropie beschreibt in der Informationstheorie den mittleren Informationsgehalt bzw. die Ungewissheit einer Quelle.
+
+Ist beispielsweise bei einer Ereignismenge jedes Ereignis gleich wahrscheinlich, so ist die Ungewissheit maximal. Tritt hingegen ein bestimmtes Ereignis mit verhältnismäßig großer Wahrscheinlichkeit ein, ist die Ungewissheit minimal \cite{information_werner}.
 
 Nach \cite{elements_cover} besitzt eine diskrete Zufallsvariable $ X $ mit dem Zeichenvorrat $ \mathcal{X} $ und der Wahrscheinlichkeitsfunktion $ p(x) $ die \textit{Entropie}
 \begin{equation*}
@@ -29,14 +31,14 @@ Diese lässt sich nach \cite{elements_cover} auch über den Erwartungswert $ E $
 \end{equation}
 folgt.
 
-Desweiteren ist die Formel für die \textit{bedingte Entropie} nach \cite{elements_cover} gegeben durch
+Desweiteren ist die Formel für die \textit{bedingte Entropie}, also der Ungewissheit einer Zufallsvariable Y gegeben X, nach \cite{elements_cover} gegeben durch
 \begin{equation}
     H(Y|X) = - E_{p(x,y)}\ log\ p(Y|X) \label{eq:condit_entropy}
 \end{equation}
 
-\smallspace
+\paragraph{Transinformation}
 
-Die \textit{Transinformation} beschreibt die Menge an Information, die eine Zufallsvariable über eine andere enthält bzw. die Reduktion der Ungewissheit aufgrund des Wissens um die jeweils andere Zufallsvariable \cite{elements_cover}.
+Die Transinformation beschreibt die Menge an Information, die eine Zufallsvariable über eine andere enthält bzw. die Reduktion der Ungewissheit aufgrund des Wissens um die jeweils andere Zufallsvariable \cite{elements_cover}.
 
 Mathematisch wichtig für uns ist lediglich der Zusammenhang zwischen \textit{Transinformation} und \textit{Entropie}, welcher nach \cite{elements_cover} gegeben ist durch
 \begin{equation}
@@ -46,7 +48,7 @@ Mathematisch wichtig für uns ist lediglich der Zusammenhang zwischen \textit{Tr
 % Erklärung des Algorithmus
 \subsection{Funktionsweise}
 \label{sec:diversity_howitworks}
-\begin{figure}
+\begin{figure}[h]
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/algorithm_diayn.JPG}
 \caption{``Diversity is all you need'' Algorithmus} \label{img:diayn}
 \source{\cite{diversity_eysenbach}}
@@ -58,32 +60,32 @@ Das selbstständige Erlernen von brauchbaren Fähigkeiten, so wie in \cite{diver
 (1) Unterschiedliche Fähigkeiten sollten andere Zustände besuchen, sodass ihre Unterscheidbarkeit gewährleistet ist.
 
 %TODO "Paper"
-(2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel. Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt.
+(2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel: Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt. Die exakten Aktionen, die für das Halten der Tasse getätigt werden, sind also letztendlich für die Unterscheidung weniger relevant also die beobachtbaren Zustände.
 
-(3) Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Fähigkeiten mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
+(3) Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Skills mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
 
 \smallspace
 
-Um diese Punkte zu realisieren, definieren wir zunächst die Zufallsvariablen $ S $ und $ A $ für Zustände und Aktionen. Sei nun $ Z \sim p(z) $ eine latente Variable, unter deren Bedingung die Strategie definiert wird. Bei fixem $ Z $ sprechen wir hier von einer "Fähigkeit". Entropie sowie Transinformation werden zur Basis $ e $ berechnet.
+Um diese Punkte zu realisieren, definieren wir zunächst die Zufallsvariablen $ S $ und $ A $ für Zustände und Aktionen. Sei nun $ Z \sim p(z) $ eine latente Variable, unter deren Bedingung die Strategie definiert wird. Bei fixem $ Z $ sprechen wir hier von einer \textit{Fähigkeit}. Entropie sowie Transinformation werden zur Basis $ e $ berechnet.
 
-Nun soll die Transinformation zwischen Fähigkeiten und Zuständen, $ I(S;Z) $, maximiert werden um sicherzustellen, dass die Fähigkeit die vom Agent durchlaufenen Zustände vorgibt. Anders gesagt wird sichergestellt, dass aus den besuchten Zuständen auf die Fähigkeit geschlossen werden kann.
+Nun soll die Transinformation zwischen Skill und State, $ I(S;Z) $, maximiert werden. Dies stellt sicher, dass die Fähigkeit bestimmt, welche Zustände vom Agenten durchlaufen werden. Anders formuliert lässt sich aus den besuchten Zuständen auf die Fähigkeit schließen.
 
-Außerdem minimieren wir die Transinformation zwischen Fähigkeit und Aktionen bei gegebenen Zustand, $ I(A; Z | S) $. So wird garantiert, dass nicht Aktionen, sondern Zustände für die Unterscheidung von Fähigkeiten verwendet werden.
+Außerdem minimieren wir die Transinformation zwischen Skill und Aktion bei gegebenen Zustand, $ I(A; Z | S) $. So wird garantiert, dass nicht Aktionen, sondern Zustände für die Unterscheidung von Fähigkeiten betrachtet werden.
 
 % unklar
-Maximiert wird auch die Entropie $ H(A|S) $.
+Zuletzt maximieren wir die Entropie $ H(A|S) $.
 
 \smallspace
 
-Insgesamt maximieren wir nach \cite{diversity_eysenbach} also
+Zusammengefasst maximieren wir nach \cite{diversity_eysenbach} also das \textit{Objective}
 \begin{align}
     \mathcal{F}(\theta) &\stackrel{\triangle}{=} I(S;Z) + H(A|S) - I(A;Z|S) \label{eq:objective_1}\\
     & = (H(Z) - H(Z|S)) + H(A|S) - (H(A|S) - H(A|S,Z)) \nonumber\\
     & = H(Z) - H(Z|S) + H(A|S,Z) \label{eq:objective_intuitive}
 \end{align}
-Der Term wurde unter Verwendung von \eqref{eq:trans_ent} umgeformt.
+Der Term wurde unter Verwendung der Definition \eqref{eq:trans_ent} umgeformt.
 
-Da sich $ p(z|S) $ nicht genau berechnen lässt, wird das Folgende mit einem discriminator $ q_\phi $ approximiert. Mit der Jensenschen Ungleichung haben wir laut \cite{diversity_eysenbach} eine untere Schranke $ \mathcal{G}(\theta) $ für $ \mathcal{F}(\theta, \phi) $:
+Da sich $ p(z|S) $ nicht genau berechnen lässt, wird das Folgende mit einem discriminator $ q_\phi $ approximiert. Mit der Jensenschen Ungleichung haben wir laut \cite{diversity_eysenbach} eine untere Schranke $ \mathcal{G}(\theta, \phi) $ für $ \mathcal{F}(\theta) $:
 \begin{align}
     \mathcal{F}(\theta) & = H(A|S,Z) - H(Z|S) + H(Z) \nonumber\\
     & = H(A|S,Z) + E_{z \sim p(z), s \sim \pi(z)}(log\ p(z | s)) - E_{z \sim p(z)}(log\ p(z)) \label{eq:objective_2}\\
@@ -108,7 +110,7 @@ Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung vo
 \includegraphics[width=0.95\textwidth, right]{images/example_diayn_2.JPG}
 \caption{Überlagernde Fähigkeiten} \label{img:diayn_ex2}
 \end{subfigure}
-\caption{TODO} \label{img:diayn_ex}
+\caption{Zweidimensionale Experimente} \label{img:diayn_ex}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
@@ -137,7 +139,7 @@ Eine Reward-Funktion, welche ein solches Verhalten hervorruft, manuell zu defini
 
 \subsection{Verwendung der gelernten Fähigkeiten}
 \label{sec:diversityusage}
-Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde stellt sich nun die Frage, wie sich diese effektiv nutzen lässt.
+Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde, stellt sich nun die Frage, wie sich diese effektiv nutzen lässt.
 
 \smallspace
 
@@ -152,13 +154,13 @@ Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde stellt sich nun die Fra
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-\cite{diversity_eysenbach} führt hier als erstes an, dass der DIAYN Algorithmus als ein Vortraining genutzt werden kann. Danach extrahiert man die Fähigkeit mit dem größten Reward und passt entsprechend die Initialgewichte der eigentlichen Policy an. \ref{img:cheetah_rewards} zeigt für das Beispiel des Half Cheetahs, dass sich bei Initialisierung mit einre vorgelernten Fähigkeit (blaue Linie) schneller größere Rewards erzielen lassen als bei einer zufälligen Initialisierung (orangene Linie).
+\cite{diversity_eysenbach} führt hier als erstes an, dass der DIAYN Algorithmus als ein Vortraining genutzt werden kann. Danach extrahiert man die Fähigkeit mit dem größten Reward und passt entsprechend die Initialgewichte der eigentlichen Policy an. \ref{img:cheetah_rewards} zeigt für das Beispiel des Half Cheetahs, dass sich bei Initialisierung mit einer vorgelernten Fähigkeit (blaue Linie) schneller größere Rewards erzielen lassen als bei einer zufälligen Initialisierung (orangene Linie).
 
 \smallspace
 
-Für uns interessanter ist allerdings die Verwendung für Hierarchisches Reinforcement Learning (HRL). 
+Für uns interessanter ist allerdings die Verwendung für \textit{Hierarchisches Reinforcement Learning} (HRL). 
 
-Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus mehreren Schichten besteht. Jede Ebene kontrolliert hierbei ein andere temporäre Abstraktionsebene. Dies ermöglicht es dem Agenten, nicht nur Basisoperationen auszuführen, sondern auch komplexere Aktionen wie zum Beispiel Sequenzen von Operationen einer niedrigeren Ebene.
+Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus mehreren Schichten besteht. Jede Ebene kontrolliert hierbei eine andere temporäre Abstraktionsebene. Dies ermöglicht es dem Agenten, nicht nur Basisoperationen auszuführen, sondern auch komplexere Aktionen wie zum Beispiel Sequenzen von Operationen einer niedrigeren Ebene.
 
 \smallspace
 
@@ -180,7 +182,7 @@ Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus 
 
 Laut \cite{diversity_eysenbach} eignet sich DIAYN hervorrangend als Grundstein für HRL. Für ein Experiment diesbezüglich betrachten wir wieder den Half Cheetah. Dieser hat nun die Aufgabe, über Hürden zu springen (siehe \ref{img:cheetah_hurdle_img}) und erhält Rewards für deren überwinden.
 
-Um die gelernten Fähigkeiten für HRL zu benutzen, wird DIAYN um einen ``meta-controller'' erweitert welcher kontrolliert, welche 10 Fähigkeiten jeweils als nächstes ausgeführt werden.
+Um die gelernten Fähigkeiten für HRL zu nutzen, wird DIAYN um einen \textit{meta-controller} erweitert. Dieser kontrolliert, welche 10 Fähigkeiten jeweils als nächstes ausgeführt werden.
 
 Das Experiment wird außerdem mit aktuellen Reinforcement Learning Algorithmen (VIME, TRPO und SAC) durchgeführt.
 

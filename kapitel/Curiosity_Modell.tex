@@ -1,14 +1,9 @@
 
 \section{Das Curiosity Modell nach Schmidhuber}
 \label{sec:Curiosity_Schmidhuber}
-
-\subsection{Grundlagen des Curiosity Modells}
-\label{sec:Grundlegende_Prinzipien}
-
 Um Schmidhubers System verstehen zu können, ist es wichtig, zuerst einige zentrale Grundbegriffe zu definieren.
 Die Säulen seines Werks bilden vor allem vier zentrale Prinzipien, die in \citetitle{curiosity_schmidhuber} dargelegt werden.
 
-\subsubsection{Prinzip der Historie}
 
 \paragraph{Information ist ``heilig''}
 \label{sec:Information_Heilig}
@@ -32,18 +27,23 @@ Ein Agent sollte seinen Kompressionsfortschritt überwachen und bei erfolgreiche
 \paragraph{Intrinsische Belohnungen maximieren}
 Ein entsprechender Reinforcement Learning Algorithmus kann nun versuchen, die zu erwartende intrinsische Belohnung zu maximieren. Laut Schmidhuber würde sich ein solcher Algorithmus vor allem auf solche Aktionen fokussieren, die es erlauben, neue aber erlernbare Regularitäten zu finden oder zu erstellen.
 
+
 \subsection{Funktionsweise des Kompressors}
 \label{sec:Kompressor}
+Schmidhuber merkt im Bezug auf Kompressoren an, dass das \emph{Vorhersagen} zukünftiger Eingabewerte \(x(\tau)\) gegeben einer Historie \(h(<\tau)\) durchaus dazu verwendet werden kann, um \(h(\leq t)\) kompakt zu kodieren \cite[p.~18]{curiosity_schmidhuber}
+Ein Beispiel für einen solchen Kompressor/Prediktor findet sich in Solomonoff's universeller, induktiver Inferenz \cite[p.~18]{curiosity_schmidhuber}. 
+Dieser Ansatz versucht das Problem zu lösen, mit welcher Wahrscheinlichkeit sich von einer langen Sequenz \(T\) auf die anschließende Teilfolge \(a\) schließen lässt \cite{SOLOMONOFF19641}.
+
 \subsubsection{Interne Symbole als Konsequenz effizienter Komprimierung}
 Schmidhuber beschreibt weiter, aufbauend auf einer generellen Historie an Beobachtungen, wie ein vorausschauendes neurales Netz, das als Kompressor fungiert, spezielle interne Repräsentierungen generiert, welche über häufig auftretende Dinge abstrahieren. Diese internen Darstellungen werden kurz \emph{Symbole} genannt \cite[p.~6]{curiosity_schmidhuber}. Ein naheliegendes Beispiel findet sich laut Schmidhuber etwa im Tag/Nacht-Rhythmus. Da der Sonnen Auf- und Untergang sich beständig wiederholt, ist es effizienter, ein spezifisches Symbol für diesen Prozess zu generieren und die Komprimierung dadurch voranzutreiben.
 
 
 \paragraph{Leistungsmessung eines Kompressors}
-Zur Bewertung eines Kompressors \(p\) der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
+Zur Bewertung eines Kompressors \(p\), der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
 \begin{equation}
   C_l(p,h(\leq t)) = l(p)  
 \end{equation}
-ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden. \cite[p.~19]{curiosity_schmidhuber}
+ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden \cite[p.~19]{curiosity_schmidhuber}.
 Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogorov Komplexität \(K^*(h(\leq t))\), also das kürzeste Programm, welches eine Ausgabe produziert, die mit \(h(\leq t)\) beginnt, dar.
 
 Während eine Leistungsmessung dieser zwar Art möglich ist, muss idealerweise auch die \emph{Zeit} in Betracht gezogen werden, die ein Kompressor benötigt, um eine gegebene Historie \(h\) zu komprimieren. Andernfalls wäre ein Szenario denkbar, in der ein Kompressor zwar eine extrem kompakte Repräsentation der vorliegenden Daten produzieren könnte, für diesen Prozess aber extrem viel Rechenzeit benötigt und somit praktisch unbrauchbar wäre.
@@ -59,7 +59,7 @@ Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion au
 \begin{equation}
   r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right]  
 \end{equation}
-wobei \(f\) jeweils reale Paare auf selbige abbildet. \cite[p.~19]{curiosity_schmidhuber}
+, wobei \(f\) jeweils reale Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)). \cite[p.~19]{curiosity_schmidhuber}
 
 
 
@@ -70,54 +70,57 @@ wobei \(f\) jeweils reale Paare auf selbige abbildet. \cite[p.~19]{curiosity_sch
 
 
 \subsection{Funktionsweise des Agenten}
-Der in \ref{sec:Kompressor} beschriebene Kompressor stellt offensichtlich nur einen teil des Ganzen dar. Der Agent an sich verfügt ebenfalls über einen \emph{Controller}, der auf Basis der aktuellen Beobachtung eine entsprechende Reaktion generiert.
-Im folgenden wird nun erläutert auf welchen Prinzipien diese Aktionen gewählt und ausgeführt werden.
+Der in \ref{sec:Kompressor} beschriebene Kompressor stellt offensichtlich nur einen Teil des Ganzen dar. Der Agent an sich verfügt ebenfalls über einen \emph{Controller}, der auf Basis der aktuellen Beobachtung eine entsprechende Reaktion generiert.
+Im folgenden wird nun erläutert, auf welchen Prinzipien diese Aktionen gewählt und ausgeführt werden.
 
 \paragraph{Subjektive Interessantheit als Ableitung subjektiver Schönheit}
 \label{sec:Beauty_und_Curiosity}
-Laut Schmidhuber lässt sich die subjektive Schönheit einer Beobachtung als die Menge an benötigten Bits definieren, um diese Beobachtung zu kodieren \cite[p.~7]{curiosity_schmidhuber} 
+
+Damit es einem Agenten möglich sein kann, auf eine Weise \emph{neugierig} zu handeln, benötigt man offensichtlich eine formale Definition dessen, was eine \emph{interessante} Beobachtung ausmacht. Zu diesem Zweck benötigt man allerdings zuerst ein Konzept von \emph{subjektiver Schönheit}.
+
+Laut Schmidhuber lässt sich die subjektive Schönheit einer Beobachtung als die Menge an benötigten Bits definieren, um diese Beobachtung zu kodieren \cite[p.~7]{curiosity_schmidhuber}.
 Genauer formuliert bedeutet dies: \\
 Sei \(O(t)\) der Zustand eines subjektiven Beobachters am Zeitpunkt \(t\). 
 Die subjektive Schönheit sei gegeben durch \(B(D,O(t))\), wobei es sich bei \(D\) um die jeweilige Beobachtung handelt.
-Dieses Maß der subjektiven Schönheit ist proportional zur Menge an Bits um \(D\) zu beschreiben, wobei jegliches vorheriges Wissen des Beobachters ebenfalls in Betracht gezogen werden muss. \cite[p.~7]{curiosity_schmidhuber}
+Dieses Maß der subjektiven Schönheit ist proportional zur Menge an Bits um \(D\) zu beschreiben, wobei jegliches vorheriges Wissen des Beobachters ebenfalls in Betracht gezogen werden muss \cite[p.~7]{curiosity_schmidhuber}.
 Schmidhuber erklärt diese Definition anhand des Beispiels eines menschlichen Gesichts. So würde es sich für einen Kompressor anbieten, eine interne Repräsentation eines archetypischen Gesichts zu generieren, um bereits beobachtete Gesichter möglichst effizient zu kodieren. Die Beobachtung eines neuen Gesichts erlaubt es dann, lediglich die spezifischen Abweichungen dieses neuen Gesichts vom internen Prototypen zu speichern. Ein solcher Beobachter würde also genau solche Gesichter als subjektiv am schönsten klassifizieren, die am geringsten vom internen Gesichtsprototypen des Beobachters abweichen. \cite[p.~7]{curiosity_schmidhuber} \\
 
 Schmidhuber führt nun, aufbauend auf der subjektiven Schönheit, den Begriff der \emph{subjektiven Interessantheit} ein. 
-Er argumentiert, dass eine subjektiv schöne Beobachtung nur so lange interessant ist, bis der Beobachter die spezifische Regularität des Objekts komplett verarbeitet hat.\cite[p.~7-8]{curiosity_schmidhuber} In anderen Worten ist eine Beobachtung also nur dann für einen Beobachter interessant, wenn dessen Kompressor diese Beobachtung noch nicht optimal zusammenfassen kann. \\
+Er argumentiert, dass eine subjektiv schöne Beobachtung nur so lange interessant ist, bis der Beobachter die spezifische Regularität des Objekts komplett verarbeitet hat \cite[p.~7-8]{curiosity_schmidhuber}. In anderen Worten ist eine Beobachtung also nur dann für einen Beobachter interessant, wenn dessen Kompressor diese Beobachtung noch nicht optimal zusammenfassen kann. \\
 
 Genauer definiert Schmidhuber nun die \emph{zeitabhängige} subjektive Interessantheit \(I(D,O(t))\) einer Beobachtung \(D\) in Relation zu einem Beobachter \(O\) am Zeitpunkt \(t\) als 
 \begin{equation}
     I(D,O(t)) \sim \frac{\partial B(D,O(t))}{\partial t}
 \end{equation}
 , also der ersten Ableitung der subjektiven Schönheit \cite[p.~8]{curiosity_schmidhuber}.
-Ein Agent kann seine Beobachtungen also über Zeit besser analysieren und etwaige Wiederholungen oder Regularitäten erkennen, wodurch die beobachteten Daten subjektiv schöner werden. Solange diese Komprimierungsprozess anhält, handelt es sich um \emph{interessante} Daten. \cite[p.~8]{curiosity_schmidhuber}
+Ein Agent kann seine Beobachtungen also über Zeit besser analysieren und etwaige Wiederholungen oder Regelmäßigkeiten erkennen, wodurch die beobachteten Daten subjektiv schöner werden. Solange diese Komprimierungsprozess anhält, handelt es sich um \emph{interessante} Daten. \cite[p.~8]{curiosity_schmidhuber}
 
 
 \subsubsection{Wie neugierige Agenten operieren}
 Auf Basis der subjektiven Schönheit und darauf aufbauend, der subjektiven Interessantheit, lässt sich nun erläutern, wie etwa ein auf Reinforcement Learning basierender Agent handeln würde. 
-Schmidhuber setzt an, dass im Falle von fehlenden äußeren Belohnungen, ein entsprechender Agent versuchen würde, die \emph{Interessantheit} zu maximieren \cite[p.~8]{curiosity_schmidhuber}.
+Schmidhuber setzt an, dass im Falle von fehlenden äußeren Belohnungen ein entsprechender Agent versuchen würde, die \emph{Interessantheit} zu maximieren \cite[p.~8]{curiosity_schmidhuber}.
 Es werden also genau solche Sequenzen an Aktionen vom Agenten ausgewählt, welche zukünftig den zu erwartenden Kompressionsfortschritt maximieren \cite[p.~8]{curiosity_schmidhuber}
 
 Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
 In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
-Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen realen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reale Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzen} 
+Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen reellen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reelle Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzens} 
 \begin{equation} \label{eq:objective_curiosity}
   u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \bigl\lvert h(\leq t)\right]  
 \end{equation}
-wobei \(r(t)\) einen zusätzlichen realen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
+, wobei \(r(t)\) einen zusätzlichen reellen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
 In diesem Kontext stellt \(h(t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
 
 Der Belohnungswert \(r(t)\) kann laut Schmidhuber noch weiter in eine Form von \(r(t) = g(r_{ext}(t),r_{int}(t))\) aufgeteilt werden \cite{curiosity_schmidhuber}.
 Die Funktion \(g\) bildet hierbei die beiden reellen Werte \(r_{ext}\) und \(r_{int}\) auf einen weiteren reellen Wert ab. In diesem Kontext entspricht \(r_{ext}\) dem traditionell verwendeten Wert der \emph{externen} Belohnung, welche durch die Umgebung generiert wird und beispielsweise entsteht, wenn der Agent ein gegebenes Ziel erreicht. 
-Da sich der Fokus allerdings haupttsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man inm folgenden zum einfacheren Verständniss stets von \(r_{ext}(t) = 0\) ausgehen.
+Da sich der Fokus allerdings haupttsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man im Folgenden zum einfacheren Verständnis stets von \(r_{ext}(t) = 0\) ausgehen.
 
 \paragraph{Leistungsmessung eines Kompressors}
 \label{sec:Kompressor_Leistung}
-Zur Bewertung eines Kompressors \(p\) der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
+Zur Bewertung eines Kompressors \(p\), der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
 \begin{equation}
   C_l(p,h(\leq t)) = l(p)  
 \end{equation}
-ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden. \cite[p.~19]{curiosity_schmidhuber}
+ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden \cite[p.~19]{curiosity_schmidhuber}.
 Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogorov Komplexität \(K^*(h(\leq t))\), also das kürzeste Programm, welches eine Ausgabe produziert, die mit \(h(\leq t)\) beginnt, dar.
 
 
@@ -127,26 +130,26 @@ Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion au
 \begin{equation}
   r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right]  
 \end{equation}
-wobei \(f\) jeweils reale Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)). \cite[p.~19]{curiosity_schmidhuber}
+, wobei \(f\) jeweils reelle Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)) \cite[p.~19]{curiosity_schmidhuber}.
 
-\subsubsection{Agent und Kompressor in Wechselwirkung}
+\subsection{Agent und Kompressor in Wechselwirkung}
 
-Aufbauend auf den bisher genannten Prinzipien von Schmidhubers neugierigen Agenten, kann nun ein informeller Algorithmus beschrieben werden, der das (in diesem Fall asynchrone) Zusammenspiel zwischen dem Controller des Agenten, also dem aktiv agierenden Teil, und dem Kompressor aufzeigt.
+Aufbauend auf den bisher genannten Prinzipien von Schmidhubers neugierigen Agenten kann nun ein informeller Algorithmus beschrieben werden, der das (in diesem Fall asynchrone) Zusammenspiel zwischen dem Controller des Agenten, also dem aktiv agierenden Teil, und dem Kompressor aufzeigt.
 
 Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Controller zum Zeitpunkt \(t\).
 
 \paragraph{Controller:} Solange für  \(t\) gilt \(1 \leq t \leq T\): 
 \begin{enumerate}
-  \item Der aktuelle Controller \(s(t)\) nutzt teile der Historie \(h(t)\) um eine Aktion \(y(t+1)\) auszuführen.
+  \item Der aktuelle Controller \(s(t)\) nutzt Teile der Historie \(h(t)\) um eine Aktion \(y(t+1)\) auszuführen.
   \item Beobachte die Eingabe \(x(t+1)\).
   \item Prüfe, ob der asynchron laufende Kompressor eine interne Belohnung \(r_{int}(t+1)\) größer Null generiert hat. Andernfalls, setze \(r_{int}(t+1) = 0\).
-  \item Der Reinforcement Learning Algorithmus des Controllers kann nun die Historie \(h(t+1)\) zusammen mit \(r_{int}(t+1)\) nutzen. um einen neuen Controller \(s(t+1)\) zu erhalten, der wiederum die zu erwartende \emph{Nützlichkeit} maximiert, wie in \eqref{eq:objective_curiosity} beschrieben.
+  \item Der Reinforcement Learning Algorithmus des Controllers kann nun die Historie \(h(t+1)\) zusammen mit \(r_{int}(t+1)\) nutzen, um einen neuen Controller \(s(t+1)\) zu erhalten, der wiederum die zu erwartende \emph{Nützlichkeit} maximiert, wie in \eqref{eq:objective_curiosity} beschrieben.
 \end{enumerate}
 
 \paragraph{Kompressor:} Wir nehmen an, dass \(p_{new}\) zu Beginn dem initialen Kompressor entspricht. Für jeden Zeitschritt \(t\) durchläuft der Kompressor somit:
 \begin{enumerate}
   \item Setze \(p_{old} = p_{new}\). Setze zudem \(h_{old} = h(\leq t)\). \(h_{old}\) entspricht also der Historie am aktuellen Zeitpunkt \(t\).
-  \item Wende Kompressor \(p_{old}\) auf \(h_{old}\)) an und berechne, Sektion \ref{sec:Kompressor_Leistung} entsprechend, \(C(p_{old},h_{old})\). Gerade diese Schritt kann unter Umständen sehr zeitaufwändig sein.
+  \item Wende Kompressor \(p_{old}\) auf \(h_{old}\) an und berechne, Sektion \ref{sec:Kompressor_Leistung} entsprechend, \(C(p_{old},h_{old})\). Gerade dieser Schritt kann unter Umständen sehr zeitaufwändig sein.
   \item Wende nun einen, dem jeweiligen Agentenziel entsprechenden, Algorithmus an, um einen besseren Kompressor \(p_{new}\) auf Basis von \(h_{old}\) zu generieren. In diesem Schritt ist zu beachten, dass \(p_{new}\) nicht zwingend \emph{optimal} sein muss.
   \item Wende, wie bereits in Schritt 2, \(p_{new}\) auf \(h_{old}\) an, um \(C(p_{new},h_{old})\) zu erhalten.
   \item Gegeben dem aktuellen Zeitpunkt \(\tau\), berechne \begin{equation} r_{int}(\tau) = f \left[C(p_{old},h_{old}),C(p_{new},h_{old})\right] \end{equation}
