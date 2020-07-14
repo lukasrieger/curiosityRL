@@ -1,12 +1,12 @@
 \section{Diversity im Reinforcement Learning}
 \label{sec:diversity}
 % Ziel
-In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des Reinforcement Learning (RL) Anwendung finden kann. Ziel ist, dass ein RL Agent in einer unüberwachten Phase zunächst Fähigkeiten (\textit{Skills}) erlernt, welche das Bewältigen von Aufgaben in der darauffolgenden, überwachten Phase erleichtern sollen. Dieser Prozess geschieht ohne jegliche Belohnung von außen.
+In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des RL Anwendung finden kann. Ziel ist, dass ein RL-Agent in einer unüberwachten Phase zunächst Fähigkeiten (\textit{Skills}) erlernt, welche das Bewältigen von Aufgaben in der darauffolgenden, überwachten Phase erleichtern sollen. Dieser Prozess geschieht ohne jegliche Belohnung von außen. 
 
 Dieses Kapitel stützt sich zu einem Großteil auf \textit{Diversity is all you need: Learning skills without a reward function} von \citeauthor{diversity_eysenbach} \cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
 
 % Grundlegende Begriffe
-\subsection{Klärung wichtiger Begriffe aus der Informationstheorie}
+\subsection{Wichtige Begriffe aus der Informationstheorie}
 \label{sec:informationtheory}
 Im Folgenden werden Begriffe aus der Informationstheorie verwendet, welche es zunächst zu klären gilt. Wir betrachten \textit{Entropie} und \textit{Transinformation} nach \cite{elements_cover} und \cite{information_werner}.
 
@@ -14,14 +14,14 @@ Im Folgenden werden Begriffe aus der Informationstheorie verwendet, welche es zu
 
 Die Entropie beschreibt in der Informationstheorie den mittleren Informationsgehalt bzw. die Ungewissheit einer Quelle.
 
-Ist beispielsweise bei einer Ereignismenge jedes Ereignis gleich wahrscheinlich, so ist die Ungewissheit maximal. Tritt hingegen ein bestimmtes Ereignis mit verhältnismäßig großer Wahrscheinlichkeit ein, ist die Ungewissheit minimal \cite{information_werner}.
+Ist beispielsweise bei einer Ereignismenge jedes Ereignis gleich wahrscheinlich, so ist die Ungewissheit maximal. Tritt hingegen ein bestimmtes Ereignis mit verhältnismäßig großer Wahrscheinlichkeit ein, ist die Ungewissheit gering \cite{information_werner}.
 
 Nach \cite{elements_cover} besitzt eine diskrete Zufallsvariable $ X $ mit dem Zeichenvorrat $ \mathcal{X} $ und der Wahrscheinlichkeitsfunktion $ p(x) $ die \textit{Entropie}
 \begin{equation*}
     H(X) = -\sum_{x \in \mathcal{X}} p(x) \cdot log\ p(x) \label{eq:entropy}
 \end{equation*}
 
-Diese lässt sich nach \cite{elements_cover} auch über den Erwartungswert $ E $ berechnen unter Verwendung von
+Diese lässt sich nach \cite{elements_cover} auch über den Erwartungswert $ E_p $ berechnen unter Verwendung von
 \begin{equation*}
     H(X) = E_p\ log\ \frac{1}{p(X)} \label{eq:entropy_1}
 \end{equation*}
@@ -31,10 +31,11 @@ Diese lässt sich nach \cite{elements_cover} auch über den Erwartungswert $ E $
 \end{equation}
 folgt.
 
-Desweiteren ist die Formel für die \textit{bedingte Entropie}, also der Ungewissheit einer Zufallsvariable Y gegeben X, nach \cite{elements_cover} gegeben durch
+Desweiteren ist die Formel für die \textit{bedingte Entropie}, also die Ungewissheit einer Zufallsvariable Y gegeben X, nach \cite{elements_cover} gegeben durch
 \begin{equation}
     H(Y|X) = - E_{p(x,y)}\ log\ p(Y|X) \label{eq:condit_entropy}
 \end{equation}
+.
 
 \paragraph{Transinformation}
 
@@ -60,7 +61,7 @@ Das selbstständige Erlernen von brauchbaren Fähigkeiten, so wie in \cite{diver
 (1) Unterschiedliche Fähigkeiten sollten andere Zustände besuchen, sodass ihre Unterscheidbarkeit gewährleistet ist.
 
 %TODO "Paper"
-(2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel: Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt. Die exakten Aktionen, die für das Halten der Tasse getätigt werden, sind also letztendlich für die Unterscheidung weniger relevant also die beobachtbaren Zustände.
+(2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel: Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt. Die exakten Aktionen, die für das Halten der Tasse getätigt werden, sind also letztendlich für die Unterscheidung weniger relevant als die beobachtbaren Zustände.
 
 (3) Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Skills mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
 
@@ -83,9 +84,9 @@ Zusammengefasst maximieren wir nach \cite{diversity_eysenbach} also das \textit{
     & = (H(Z) - H(Z|S)) + H(A|S) - (H(A|S) - H(A|S,Z)) \nonumber\\
     & = H(Z) - H(Z|S) + H(A|S,Z) \label{eq:objective_intuitive}
 \end{align}
-Der Term wurde unter Verwendung der Definition \eqref{eq:trans_ent} umgeformt.
+Der Term wurde unter Verwendung der Gleichung \eqref{eq:trans_ent} umgeformt.
 
-Da sich $ p(z|S) $ nicht genau berechnen lässt, wird das Folgende mit einem discriminator $ q_\phi $ approximiert. Mit der Jensenschen Ungleichung haben wir laut \cite{diversity_eysenbach} eine untere Schranke $ \mathcal{G}(\theta, \phi) $ für $ \mathcal{F}(\theta) $:
+Da sich $ p(z|S) $ nicht genau berechnen lässt, wird das Folgende mit einem Discriminator $ q_\phi $ approximiert. Mit der Jensenschen Ungleichung haben wir laut \cite{diversity_eysenbach} eine untere Schranke $ \mathcal{G}(\theta, \phi) $ für $ \mathcal{F}(\theta) $:
 \begin{align}
     \mathcal{F}(\theta) & = H(A|S,Z) - H(Z|S) + H(Z) \nonumber\\
     & = H(A|S,Z) + E_{z \sim p(z), s \sim \pi(z)}(log\ p(z | s)) - E_{z \sim p(z)}(log\ p(z)) \label{eq:objective_2}\\
@@ -95,7 +96,7 @@ In \eqref{eq:objective_2} wurden die Entropien nach \eqref{eq:entropy_2} und \eq
 
 \smallspace
 
-Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Aufgrund der implementierten Diversity müssen jedoch Fähigkeiten existieren, welche sich stark von den unbrauchbaren unterscheiden. So ist es intuitiv einleuchtend, dass es sich hierbei um sinnvolle Fähigkeiten handelt.
+Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Aufgrund der implementierten Diversity sollten jedoch Fähigkeiten existieren, welche sich stark von den unbrauchbaren unterscheiden. So ist es intuitiv einleuchtend, dass es sich hierbei um sinnvolle Fähigkeiten handelt.
 
 %\newpage
 % Beispiele
@@ -114,9 +115,9 @@ Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung vo
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum \ref{img:diayn_ex1}. Hier ist sehr anschaulich zu erkennen, wie die farblich kodierten Fähigkeiten unterschiedliche Zustandsräume abdecken.
+Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum (siehe Abbildung \ref{img:diayn_ex1}). Hier ist sehr anschaulich zu erkennen, wie die farblich kodierten Fähigkeiten unterschiedliche Zustandsräume abdecken.
 
-Einen Schritt weiter gedacht zeigt das Beispiel \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
+Einen Schritt weiter gedacht zeigt das Beispiel in Abbildung \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
 
 \smallspace
 
@@ -131,9 +132,9 @@ In beiden Beispielen ist gut zu erkennen, wie sich die Fähigkeiten gegenseitig 
 \source{\cite{diversity_web}}
 \end{figure}
 
-Interessanter wird es bei den komplexeren Versuchsaufbauten. Wir betrachten im Folgenden den vom Paper \cite{diversity_eysenbach} als ``Half Cheetah'' betitelten Agenten. Hierbei handelt es sich um ein hundartiges, zweidimensionales Wesen, welches die Kontrolle über sein Vorder- und Hinterbein besitzt (siehe \ref{img:cheetah_ex}).
+Interessanter wird es bei den komplexeren Versuchsaufbauten. Wir betrachten im Folgenden den von \cite{diversity_eysenbach} als ``Half Cheetah'' betitelten Agenten. Hierbei handelt es sich um ein hundartiges, zweidimensionales Wesen, welches die Kontrolle über sein Vorder- und Hinterbein besitzt (siehe Abbildung \ref{img:cheetah_ex}).
 
-Ohne jegliche externe Belohnung hat dieser Agent gelernt, nach vorne und hinten zu rennen beziehungsweise zu gehen. Außerdem besitzt er die Fähigkeit, einen Vorwärtssalto zu machen. Wir empfehlen zu besseren Veranschaulichung die Einsicht der Videos auf \cite{diversity_web}.
+Ohne jegliche externe Belohnung hat dieser Agent gelernt, nach vorne und hinten zu rennen beziehungsweise zu gehen. Außerdem besitzt er die Fähigkeit, einen Vorwärtssalto zu machen. Wir empfehlen zu besseren Veranschaulichung die Videos auf \cite{diversity_web}.
 
 Eine Reward-Funktion, welche ein solches Verhalten hervorruft, manuell zu definieren ist nicht einfach.
 
@@ -150,17 +151,17 @@ Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde, stellt sich nun die Fr
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[width=0.5\textwidth, keepaspectratio=true, left]{images/cheetah_rewards_exp.JPG}
 \end{subfigure}
-\caption{Policy Initialisierung} \label{img:cheetah_rewards}
+\caption{Policy-Initialisierung} \label{img:cheetah_rewards}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-\cite{diversity_eysenbach} führt hier als erstes an, dass der DIAYN Algorithmus als ein Vortraining genutzt werden kann. Danach extrahiert man die Fähigkeit mit dem größten Reward und passt entsprechend die Initialgewichte der eigentlichen Policy an. \ref{img:cheetah_rewards} zeigt für das Beispiel des Half Cheetahs, dass sich bei Initialisierung mit einer vorgelernten Fähigkeit (blaue Linie) schneller größere Rewards erzielen lassen als bei einer zufälligen Initialisierung (orangene Linie).
+\cite{diversity_eysenbach} führt hier als erstes an, dass der DIAYN-Algorithmus als ein Vortraining genutzt werden kann. Danach extrahiert man die Fähigkeit mit dem größten Reward und passt entsprechend die Initialgewichte der eigentlichen Policy an. Abbildung \ref{img:cheetah_rewards} zeigt für das Beispiel des Half Cheetah, dass sich bei Initialisierung mit einer vorgelernten Fähigkeit (blaue Linie) schneller größere Rewards erzielen lassen als bei einer zufälligen Initialisierung (orangene Linie).
 
 \smallspace
 
 Für uns interessanter ist allerdings die Verwendung für \textit{Hierarchisches Reinforcement Learning} (HRL). 
 
-Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus mehreren Schichten besteht. Jede Ebene kontrolliert hierbei eine andere temporäre Abstraktionsebene. Dies ermöglicht es dem Agenten, nicht nur Basisoperationen auszuführen, sondern auch komplexere Aktionen wie zum Beispiel Sequenzen von Operationen einer niedrigeren Ebene.
+Nach \cite{BerliacHierachialRL2019} lernen HRL-Methoden eine Policy, welche aus mehreren Schichten besteht. Jede Ebene kontrolliert hierbei eine andere temporäre Abstraktionsebene. Dies ermöglicht es dem Agenten, nicht nur Basisoperationen auszuführen, sondern auch komplexere Aktionen wie zum Beispiel Sequenzen von Operationen einer niedrigeren Ebene.
 
 \smallspace
 
@@ -180,13 +181,13 @@ Nach \cite{BerliacHierachialRL2019} lernen HRL Methoden eine Policy, welche aus 
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-Laut \cite{diversity_eysenbach} eignet sich DIAYN hervorrangend als Grundstein für HRL. Für ein Experiment diesbezüglich betrachten wir wieder den Half Cheetah. Dieser hat nun die Aufgabe, über Hürden zu springen (siehe \ref{img:cheetah_hurdle_img}) und erhält Rewards für deren überwinden.
+Laut \cite{diversity_eysenbach} eignet sich DIAYN hervorrangend als Grundstein für HRL. Für ein Experiment diesbezüglich betrachten wir wieder den Half Cheetah. Dieser hat nun die Aufgabe, über Hürden zu springen (siehe Abbildung \ref{img:cheetah_hurdle_img}) und erhält Rewards für deren Überwinden.
 
 Um die gelernten Fähigkeiten für HRL zu nutzen, wird DIAYN um einen \textit{meta-controller} erweitert. Dieser kontrolliert, welche 10 Fähigkeiten jeweils als nächstes ausgeführt werden.
 
 Das Experiment wird außerdem mit aktuellen Reinforcement Learning Algorithmen (VIME, TRPO und SAC) durchgeführt.
 
-Wie die Grafik \ref{img:cheetah_hurdle_graph} zeigt, schneiden diese im Experiment sehr schlecht ab und es gibt quasi keine merkliche Steigerung des Rewards. Im Gegensatz dazu zeigt der Ansatz mit dem DIAYN Algorithmus schnell deutliche Forschritte und übertrifft merklich die anderen.
+Wie die Abbildung \ref{img:cheetah_hurdle_graph} zeigt, schneiden diese im Experiment sehr schlecht ab und es gibt quasi keine merkliche Steigerung des Rewards. Im Gegensatz dazu zeigt der Ansatz mit dem DIAYN-Algorithmus schnell deutliche Forschritte und übertrifft merklich die anderen.
 
 Aufgrund der Knappheit von externen Rewards gestaltet sich diese Aufgabe extrem schwierig für traditionelle RL Algorithmen. Diese müssen quasi zufällig eine Hürde übersteigen, um eine Belohnung von außen zu bekommen.
 
