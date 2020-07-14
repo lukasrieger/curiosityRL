@@ -1,8 +1,8 @@
 
-\section{Das Curiosity Modell nach Schmidhuber}
+\section{Das Curiosity-Modell nach Schmidhuber}
 \label{sec:Curiosity_Schmidhuber}
 Um Schmidhubers System verstehen zu können, ist es wichtig, zuerst einige zentrale Grundbegriffe zu definieren.
-Die Säulen seines Werks bilden vor allem vier zentrale Prinzipien, die in \citetitle{curiosity_schmidhuber} dargelegt werden.
+Die Säulen seines Werks bilden vor allem vier zentrale Prinzipien, die in \citetitle{curiosity_schmidhuber} dargelegt werden \cite{curiosity_schmidhuber}.
 
 
 \paragraph{Information ist ``heilig''}
@@ -15,11 +15,11 @@ Für dieses sind zuerst einige Annahmen nötig:
     \item Ein menschliches Leben dauert im Durchschnitt nicht länger als \(3\times10^9\) Sekunden an.
     \item Ein menschliches Gehirn verfügt in etwa über \(10^{10}\) Neuronen, welche jeweils über ca. \(10^{4}\) Synapsen verfügen.
 \end{itemize}
-Nimmt man nun an, dass lediglich die halbe Hirnkapazität genutzt wird, um rohe Daten zu speichern und jede Synapse höchstens 6 bit speichern kann, so ist es durchaus möglich, die gesamten sensorischen Eindrücke eines Lebens bei einer Rate von \(10^5\, bits/s\) zu sichern.
+Nimmt man nun an, dass lediglich die halbe Hirnkapazität genutzt wird, um rohe Daten zu speichern und jede Synapse höchstens 6 bit speichern kann, so ist es durchaus möglich, die gesamten sensorischen Eindrücke eines Lebens bei einer Rate von \(10^5\, \textit{bits/s}\) zu sichern.
 
 \paragraph{Verbessern von subjektiver Komprimierbarkeit}
 \label{sec:Komprimierbarkeit_verbessern}
-Demzufolge lässt sich jede Regularität im Informationsstrom dazu nutzen, diesen weiter zu komprimieren. Eine solche komprimierte Version des ursprünglichen Datenstroms lässt sich also als eine Art \emph{vereinfachter Erklärung} von diesem interpretieren. Daraus folgt, dass ein Agent zumindest einen Teil seiner Rechenzeit darauf verwenden sollte, mithilfe eines Kompressionsalgorithmus seine Daten zu komprimieren.
+Demzufolge lässt sich jede Regularität im Informationsstrom dazu nutzen, diesen weiter zu komprimieren. Eine solche komprimierte Version des ursprünglichen Datenstroms lässt sich also als eine Art \emph{vereinfachter Erklärung} von diesem interpretieren. Um die Verbesserung dieser subjektiven Komprimierbarkeit zu erreichen gilt also, dass ein Agent zumindest einen Teil seiner Rechenzeit darauf verwenden sollte, mithilfe eines Kompressionsalgorithmus seine Daten zu komprimieren.
 
 \paragraph{Intrinsische Belohnungen spiegeln Kompressionsfortschritt wieder}
 Ein Agent sollte seinen Kompressionsfortschritt überwachen und bei erfolgreicher Komprimierung entsprechend darauf reagieren. In Abhängigkeit der eingesparten Bits wird dementsprechend eine intrinsische Belohnung für den Agenten generiert.
@@ -104,27 +104,17 @@ Es werden also genau solche Sequenzen an Aktionen vom Agenten ausgewählt, welch
 Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
 In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
 Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen reellen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reelle Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzens} 
-\begin{equation} \label{eq:objective_curiosity}
-  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \bigl\lvert h(\leq t)\right]  
+\begin{equation} \label{eq:objective_curiosity}lllö
+  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \Bigm\vert h(\leq t)\right]  
 \end{equation}
 , wobei \(r(t)\) einen zusätzlichen reellen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
-In diesem Kontext stellt \(h(t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
+In diesem Kontext stellt \(h(\leq t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
 
 Der Belohnungswert \(r(t)\) kann laut Schmidhuber noch weiter in eine Form von \(r(t) = g(r_{ext}(t),r_{int}(t))\) aufgeteilt werden \cite{curiosity_schmidhuber}.
 Die Funktion \(g\) bildet hierbei die beiden reellen Werte \(r_{ext}\) und \(r_{int}\) auf einen weiteren reellen Wert ab. In diesem Kontext entspricht \(r_{ext}\) dem traditionell verwendeten Wert der \emph{externen} Belohnung, welche durch die Umgebung generiert wird und beispielsweise entsteht, wenn der Agent ein gegebenes Ziel erreicht. 
-Da sich der Fokus allerdings haupttsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man im Folgenden zum einfacheren Verständnis stets von \(r_{ext}(t) = 0\) ausgehen.
+Da sich der Fokus allerdings hauptsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man im Folgenden zum einfacheren Verständnis stets von \(r_{ext}(t) = 0\) ausgehen.
 
-\paragraph{Leistungsmessung eines Kompressors}
-\label{sec:Kompressor_Leistung}
-Zur Bewertung eines Kompressors \(p\), der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
-\begin{equation}
-  C_l(p,h(\leq t)) = l(p)  
-\end{equation}
-ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden \cite[p.~19]{curiosity_schmidhuber}.
-Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogorov Komplexität \(K^*(h(\leq t))\), also das kürzeste Programm, welches eine Ausgabe produziert, die mit \(h(\leq t)\) beginnt, dar.
-
-
-\paragraph{Bewertung des Kompressor Fortschritts}
+\paragraph{Bewertung des Kompressorfortschritts}
 Die Leistung eines Kompressors an sich stellt allerdings nicht den Kernaspekt des Curiosity-Ansatzes dar. Ähnlich wie schon im Abschnit \ref{sec:Beauty_und_Curiosity} liegt der Fokus viel mehr auf der \emph{Änderung} dieses Werts über mehrere Zeitschritte hinweg - also der \emph{Verbesserung} des Kompressors.
 Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion auf den Fortschritt des Kompressors als 
 \begin{equation}
@@ -138,15 +128,15 @@ Aufbauend auf den bisher genannten Prinzipien von Schmidhubers neugierigen Agent
 
 Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Controller zum Zeitpunkt \(t\).
 
-\paragraph{Controller:} Solange für  \(t\) gilt \(1 \leq t \leq T\): 
+\paragraph{Controller} Solange für  \(t\) gilt \(1 \leq t \leq T\): 
 \begin{enumerate}
   \item Der aktuelle Controller \(s(t)\) nutzt Teile der Historie \(h(t)\) um eine Aktion \(y(t+1)\) auszuführen.
   \item Beobachte die Eingabe \(x(t+1)\).
   \item Prüfe, ob der asynchron laufende Kompressor eine interne Belohnung \(r_{int}(t+1)\) größer Null generiert hat. Andernfalls, setze \(r_{int}(t+1) = 0\).
-  \item Der Reinforcement Learning Algorithmus des Controllers kann nun die Historie \(h(t+1)\) zusammen mit \(r_{int}(t+1)\) nutzen, um einen neuen Controller \(s(t+1)\) zu erhalten, der wiederum die zu erwartende \emph{Nützlichkeit} maximiert, wie in \eqref{eq:objective_curiosity} beschrieben.
+  \item Der Reinforcement-Learning-Algorithmus des Controllers kann nun die Historie \(h(t+1)\) zusammen mit \(r_{int}(t+1)\) nutzen, um einen neuen Controller \(s(t+1)\) zu erhalten, der wiederum die zu erwartende \emph{Nützlichkeit} maximiert, wie in Formel \eqref{eq:objective_curiosity} beschrieben.
 \end{enumerate}
 
-\paragraph{Kompressor:} Wir nehmen an, dass \(p_{new}\) zu Beginn dem initialen Kompressor entspricht. Für jeden Zeitschritt \(t\) durchläuft der Kompressor somit:
+\paragraph{Kompressor} Wir nehmen an, dass \(p_{new}\) zu Beginn dem initialen Kompressor entspricht. Für jeden Zeitschritt \(t\) durchläuft der Kompressor somit:
 \begin{enumerate}
   \item Setze \(p_{old} = p_{new}\). Setze zudem \(h_{old} = h(\leq t)\). \(h_{old}\) entspricht also der Historie am aktuellen Zeitpunkt \(t\).
   \item Wende Kompressor \(p_{old}\) auf \(h_{old}\) an und berechne, Sektion \ref{sec:Kompressor_Leistung} entsprechend, \(C(p_{old},h_{old})\). Gerade dieser Schritt kann unter Umständen sehr zeitaufwändig sein.
