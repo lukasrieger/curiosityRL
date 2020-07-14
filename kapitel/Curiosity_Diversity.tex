@@ -1,37 +1,33 @@
 \section{Curiosity und Diversity im Vergleich}
 \label{sec:comparison}
-% Bli blub Gemeinsamkeiten und Kernunterschiede folgen:
-Im Folgenden betrachten wir einige konzeptuelle Ähnlichkeiten zwischen den in \ref{sec:Curiosity_Schmidhuber} und \ref{sec:diversity} betrachteten Ansätzen.
-%Anschließend versuchen wir, diese anhand einiger simpler Beispiele zu verdeutlichen. 
-Es bleibt zu beachten, dass sich beide Ansätze trotz ihrer praktischen Überschneidungen vorallem in der Philosophie ihrer Herangehensweise unterscheiden.
+Im Folgenden betrachten wir einige konzeptuelle Ähnlichkeiten zwischen den in Kapitel \ref{sec:Curiosity_Schmidhuber} und \ref{sec:diversity} betrachteten Ansätzen.
+Es bleibt zu beachten, dass sich beide Ansätze trotz ihrer praktischen Überschneidungen vor allem in der Philosophie ihrer Herangehensweise unterscheiden.
 
-\subsection{Theoretischer Vergleich}
+\subsection{Erkundung des Skill-Raums}
 \label{sec:comparison_theory}
 % Maximal komprimierte Daten entsprechen maximal diversen Fähigkeiten
 
-Wie bereits in \ref{sec:Komprimierbarkeit_verbessern} erläutert, tendiert ein neugieriger Agent in Schmidhubers Theorie dazu, Regularitäten zu komprimieren und zusammenzufassen. Darauf aufbauend, versucht ein solcher Agent intern, den zu erwartenden \emph{zukünftigen} Komprimierungsfortschritt zu maximieren. 
-In Kombination mit der auf auf Neugierde basierenden Aktionsselektion, wie in \ref{sec:Beauty_und_Curiosity} beschrieben, führt ein Agent also tendenziell solche Aktionen aus, welche es dem Kompressor in zukunft erlauben, die Historie des Agenten besser zu beschrieben. 
-Auf Basis der Definition von subjektiver Interessantheit, wie sie in \ref{sec:Beauty_und_Curiosity} beschrieben ist, gilt im Umkehrschluss aber auch, dass sich der Agent von nicht mehr weiter komprimierbaren Beobachtungen abwendet und nach neuen Regelmäßigkeit kundschaftet, die als Interessant erachtet werden können.
+Wie bereits in Kapitel \ref{sec:Komprimierbarkeit_verbessern} erläutert, tendiert ein neugieriger Agent in Schmidhubers Theorie dazu, Regularitäten zu komprimieren und zusammenzufassen. Darauf aufbauend versucht ein solcher Agent intern, den zu erwartenden \emph{zukünftigen} Komprimierungsfortschritt zu maximieren. 
+In Kombination mit der auf auf Neugierde basierenden Aktionsselektion, wie in Kapitel \ref{sec:Beauty_und_Curiosity} beschrieben, führt ein Agent also tendenziell solche Aktionen aus, welche es dem Kompressor in Zukunft erlauben, die Historie des Agenten besser zu beschreiben. 
+Auf Basis der Definition von subjektiver Interessantheit, wie sie in Kapitel \ref{sec:Beauty_und_Curiosity} beschrieben ist, gilt im Umkehrschluss aber auch, dass sich der Agent von nicht mehr weiter komprimierbaren Beobachtungen abwendet und nach neuen Regelmäßigkeit kundschaftet, die als interessant erachtet werden können.
 
 So erzeugt der Agent auf Dauer unterschiedliche Gruppierungen von Beobachtungen, welche sich nicht weiter zusammenfassen lassen. Distinkte \emph{Symbole} unterscheiden sich so stark voneinander, dass sie keine gemeinsamen Regelmäßigkeiten aufweisen.
 
-Besagte Beobachtungen enthalten bekanntlich Zustände, Aktionen und Belohnungen. In \ref{sec:diversity_howitworks} wird erläutert, dass die Unterscheidung der Fähigkeiten im DIAYN Algorithmus nach deren besuchten Zuständen erfolgt. Nichtsdestotrotz handelt es sich um eine Abfolge von Aktionen, um besagte Zustände zu durchlaufen. Der in \ref{sec:diversity} beschriebene wichtigste Grundsatz der erlernten Skills ist, dass diese möglichst vielfältig, also maximal unterschiedlich sind. Es lässt sich also argumentieren, dass die Komprimierung von Beobachtungen nach Schmidhuber einen ähnlichen Effekt hat wie das erlernen von vielfältigen Fähigkeiten.
+Besagte Beobachtungen enthalten bekanntlich Zustände, Aktionen und Belohnungen. In Kapitel \ref{sec:diversity_howitworks} wird erläutert, dass die Unterscheidung der Fähigkeiten im DIAYN-Algorithmus nach deren besuchten Zuständen erfolgt. Nichtsdestotrotz handelt es sich um eine Abfolge von Aktionen, um besagte Zustände zu durchlaufen. Der in Kapitel \ref{sec:diversity} beschriebene wichtigste Grundsatz der erlernten Skills ist, dass diese möglichst vielfältig, also maximal unterschiedlich sind. Es lässt sich also argumentieren, dass die Komprimierung von Beobachtungen nach Schmidhuber einen ähnlichen Effekt hat wie das Erlernen von vielfältigen Fähigkeiten.
 
-%dass sich in Schmidhubers neugierigen Agenten eine ähnliche Abstraktion findet. So kann ein vom Kompressor erzeugtes Symbol als Fähigkeit aufgefasst werden.
-
-\paragraph{Unabhängigkeit von externen Belohnungen}
+\subsection{Unabhängigkeit von externen Belohnungen}
 Eine weit auffälligere Gemeinsamkeit der beiden Ansätze ist jedoch die Unabhängigkeit von externen Belohnungen.
 
 % DIAYN:
 % - Skillfindung ohne externen Reward
 % - Verwendung der Skills in HRL funktioniert gut in sparse Reward Umgebungen
-Wie in \ref{sec:diversity} und sogar im Titel von \cite{diversity_eysenbach} bereits beschrieben findet das Erlernen von Fähigkeiten in der unüberwachten Phase ohne jeglichen externen Reward statt. Der DIAYN Algorithmus erzeugt stattdessen interne Belohnungen anhand der Unterscheidbarkeit der betrachteten Fähigkeit und ist somit nicht auf Rückmeldung der Umgebung angewiesen.
+Wie in Kapitel \ref{sec:diversity} und sogar im Titel von \cite{diversity_eysenbach} (\citetitle{diversity_eysenbach}) bereits beschrieben findet das Erlernen von Fähigkeiten in der unüberwachten Phase ohne jeglichen externen Reward statt. Der DIAYN-Algorithmus erzeugt stattdessen interne Belohnungen anhand der Unterscheidbarkeit der betrachteten Fähigkeit und ist somit nicht auf Rückmeldung der Umgebung angewiesen.
 
-Weniger intuitiv verhält es sich bei der Verwendung der erlernten Fähigkeiten. Wir betrachten hierfür deren Anwendung innerhalb eines HRL wie in \ref{sec:examplesdiversity}. Die Umgebung liefert im beschriebenen Versuchsaufbau nur spärlich Belohnungen. Bei der Betrachtung der Ergebnisse des Experiments in \ref{img:cheetah_hurdle_graph} wird deutlich, dass die Benutzung der zuvor gelernten Fähigkeiten einen großen Vorteil gegenüber anderen, modernen RL Algorithmen bringt. Während diese ihren Reward kaum merklich steiern können, vergrößert sich der des DIANY Ansatzes sehr deutlich und überholt schnell alternative Methoden.
+Weniger intuitiv verhält es sich bei der Verwendung der erlernten Fähigkeiten. Wir betrachten hierfür deren Anwendung innerhalb HRL wie in Kapitel \ref{sec:examplesdiversity}. Die Umgebung liefert im beschriebenen Versuchsaufbau nur spärlich Belohnungen. Bei der Betrachtung der Ergebnisse des Experiments in Abbildung \ref{img:cheetah_hurdle_graph} wird deutlich, dass die Benutzung der zuvor gelernten Fähigkeiten einen großen Vorteil gegenüber anderen, modernen RL-Algorithmen bringt. Während diese ihren Reward kaum merklich steigern können, vergrößert sich der des DIANY-Ansatzes sehr deutlich und überholt schnell alternative Methoden.
 
 Auch auf Curiosity basierende Agenten sind in der Lage, in Umgebungen zu operieren, die kaum oder gar keine externen Belohnungen generieren. Ein Agent wendet sich in solch einer Situation schlicht der Maximierung seiner internen Belohnung \(r_{int}(t)\) zu. In anderen Worten sucht ein solcher Agent in Ermangelung externer Belohnungen stets nach denjenigen Aktionen, die ihm am \emph{interessantesten} erscheinen.
 
-So lässt sich erkennen, dass beide Ansätze in Environments, in denen nur wenig externe Belohnungen vorhanden sind, wesentlich bessere Ergebnisse erzielen als herkömmliche RL Algorithmen und somit eine adäquate Lösung für das \emph{Sparse Reward Problem} finden. Dies ist ein wichtiger Punkt, da Rewards in den meisten realen Anwendungsgebieten nur spärlich oder sogar überhaupt nicht vorhanden sind.
+So lässt sich erkennen, dass beide Ansätze in Environments, in denen nur wenig externe Belohnungen vorhanden sind, wesentlich bessere Ergebnisse erzielen als herkömmliche RL-Algorithmen und somit eine adäquate Lösung für das \emph{Sparse Reward Problem} finden. Dies ist ein wichtiger Punkt, da Rewards in den meisten realen Anwendungsgebieten nur spärlich oder sogar überhaupt nicht vorhanden sind.
 
 \bigspace
 

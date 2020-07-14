@@ -25,7 +25,7 @@ Diese lässt sich nach \cite{elements_cover} auch über den Erwartungswert $ E $
 \begin{equation*}
     H(X) = E_p\ log\ \frac{1}{p(X)} \label{eq:entropy_1}
 \end{equation*}
-, woraus unter Anwendung der Rechenregeln für Logarithmus und Erwartungswert trivial
+woraus unter Anwendung der Rechenregeln für Logarithmus und Erwartungswert trivial
 \begin{equation}
     H(X) = - E_p\ log\ p(X) \label{eq:entropy_2}
 \end{equation}
@@ -114,9 +114,11 @@ Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung vo
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum \ref{img:diayn_ex1}. Hier ist sehr anschaulich zu erkennen, wie die farblich kodierten Fähigkeiten unterschiedliche Zustandsräume abdecken.
+Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum (Abbildung \ref{img:diayn_ex}). Hierbei stellen die farbigen Linien unterschiedliche Fähigkeiten dar. Eine Fähigkeit entspricht also im Experiment einem erkundeten Pfad innerhalb des Graphen, dessen Koordinaten den Zustandsraum beschreiben.
 
-Einen Schritt weiter gedacht zeigt das Beispiel \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
+In Abbildung \ref{img:diayn_ex1} ist somit sehr anschaulich zu erkennen, wie die Fähigkeiten unterschiedliche Zustandsräume abdecken. Es fällt außerdem auf, dass die Pfade eine starke Tendenz zu den Rändern haben. Dieses Verhalten macht durchaus Sinn, da alle in der Mitte des Koordinatensystems starten. Das logische Vorgehen zum maximalen Distanzieren der Pfade ist die Ausbreitung in unterschiedliche Richtungen, da der Abstand zwischen zwei angrenzenden Pfaden - und somit auch der zu allen anderen - nach außen hin wächst. 
+
+Einen Schritt weiter gedacht zeigt das Beispiel in Abbildung \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
 
 \smallspace
 

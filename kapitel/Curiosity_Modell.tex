@@ -30,8 +30,10 @@ Ein entsprechender Reinforcement Learning Algorithmus kann nun versuchen, die zu
 
 \subsection{Funktionsweise des Kompressors}
 \label{sec:Kompressor}
+Die folgenden Abschnitte verwenden zur Darstellung zeitabhängiger Variablen \(Q\) zum Zeitpunkt \(t\) die Schreibweise \(Q(t)\). Gleichfalls stellt \(Q(\leq t)\) die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) und \(Q(<t)\) wiederum die Sequenz \(Q(1), \dots, Q(t-1)\) dar. Diese Schreibweise wurde zur besseren Übersichtlichkeit direkt von Schmidhubers Ausführungen übernommen \cite{curiosity_schmidhuber}.
+
 Schmidhuber merkt im Bezug auf Kompressoren an, dass das \emph{Vorhersagen} zukünftiger Eingabewerte \(x(\tau)\) gegeben einer Historie \(h(<\tau)\) durchaus dazu verwendet werden kann, um \(h(\leq t)\) kompakt zu kodieren \cite[p.~18]{curiosity_schmidhuber}
-Ein Beispiel für einen solchen Kompressor/Prediktor findet sich in Solomonoff's universeller, induktiver Inferenz \cite[p.~18]{curiosity_schmidhuber}. 
+Ein Beispiel für einen solchen Kompressor/Prediktor findet sich in Solomonoffs universeller, induktiver Inferenz \cite[p.~18]{curiosity_schmidhuber}. 
 Dieser Ansatz versucht das Problem zu lösen, mit welcher Wahrscheinlichkeit sich von einer langen Sequenz \(T\) auf die anschließende Teilfolge \(a\) schließen lässt \cite{SOLOMONOFF19641}.
 
 \subsubsection{Interne Symbole als Konsequenz effizienter Komprimierung}
@@ -44,9 +46,9 @@ Zur Bewertung eines Kompressors \(p\), der eine Historie \(h(\leq t)\) zum Zeitp
   C_l(p,h(\leq t)) = l(p)  
 \end{equation}
 ein. In diesem Kontext stellt \(l(p)\) die Länge von \(p\) in Bits dar. Je kürzer der Kompressor also ist, desto mehr Regelmäßigkeit lässt sich in den bisherigen Beobachtungen finden \cite[p.~19]{curiosity_schmidhuber}.
-Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogorov Komplexität \(K^*(h(\leq t))\), also das kürzeste Programm, welches eine Ausgabe produziert, die mit \(h(\leq t)\) beginnt, dar.
+Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogorov-Komplexität \(K^*(h(\leq t))\), also das kürzeste Programm, welches eine Ausgabe produziert, die mit \(h(\leq t)\) beginnt, dar.
 
-Während eine Leistungsmessung dieser zwar Art möglich ist, muss idealerweise auch die \emph{Zeit} in Betracht gezogen werden, die ein Kompressor benötigt, um eine gegebene Historie \(h\) zu komprimieren. Andernfalls wäre ein Szenario denkbar, in der ein Kompressor zwar eine extrem kompakte Repräsentation der vorliegenden Daten produzieren könnte, für diesen Prozess aber extrem viel Rechenzeit benötigt und somit praktisch unbrauchbar wäre.
+Während eine Leistungsmessung dieser Art zwar möglich ist, muss idealerweise auch die \emph{Zeit} in Betracht gezogen werden, die ein Kompressor benötigt, um eine gegebene Historie \(h\) zu komprimieren. Andernfalls wäre ein Szenario denkbar, in der ein Kompressor zwar eine extrem kompakte Repräsentation der vorliegenden Daten produzieren könnte, für diesen Prozess aber extrem viel Rechenzeit benötigt und somit praktisch unbrauchbar wäre.
 Aus diesem Grund stellt Schmidhuber noch einen zweiten Messungsansatz vor, welcher eine Reduzierung der Rechenzeit um \(\frac{1}{2}\) äquivalent zu einer Komprimierung um 1 Bit behandelt \cite[p.~19]{curiosity_schmidhuber}
 \begin{equation}
   C_{l\tau}(p,h(\leq t)) = l(p) + \log \tau(p, h(\leq t))
@@ -102,10 +104,9 @@ Schmidhuber setzt an, dass im Falle von fehlenden äußeren Belohnungen ein ents
 Es werden also genau solche Sequenzen an Aktionen vom Agenten ausgewählt, welche zukünftig den zu erwartenden Kompressionsfortschritt maximieren \cite[p.~8]{curiosity_schmidhuber}
 
 Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
-In den folgenden Abschnitten werden, Schmidhubers Schreibweise folgend, zeitabhängige Variablen \(Q\) zum Zeitpunkt \(t\) durch \(Q(t)\), die geordnete Sequenz an Werten \(Q(1), \dots,Q(t)\) durch \(Q(\leq t)\) und die Sequenz \(Q(1), \dots, Q(t-1)\) durch \(Q(<t)\) dargestellt.
 Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen reellen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reelle Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzens} 
-\begin{equation} \label{eq:objective_curiosity}lllö
-  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \Bigm\vert h(\leq t)\right]  
+\begin{equation} \label{eq:objective_curiosity}
+  u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \, \Bigg\vert \, h(\leq t)\right]  
 \end{equation}
 , wobei \(r(t)\) einen zusätzlichen reellen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
 In diesem Kontext stellt \(h(\leq t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
