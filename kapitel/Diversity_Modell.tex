@@ -96,7 +96,7 @@ In \eqref{eq:objective_2} wurden die Entropien nach \eqref{eq:entropy_2} und \eq
 
 \smallspace
 
-Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Aufgrund der implementierten Diversity sollten jedoch Fähigkeiten existieren, welche sich stark von den unbrauchbaren unterscheiden. So ist es intuitiv einleuchtend, dass es sich hierbei um sinnvolle Fähigkeiten handelt.
+Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Der von diesen abgedeckte Zustandsraum ist jedoch für die anderen Fähigkeiten tabu. So ist es aufgrund der implementierten Diversity sehr wahrscheinlich, dass es eine gewisse Anzahl an brauchbaren Fähigkeiten gibt, da sich diese von den unbrauchbaren möglichst unterscheiden sollen.
 
 %\newpage
 % Beispiele
@@ -105,26 +105,26 @@ Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung vo
 \begin{figure}[h]
 \begin{subfigure}{0.41\textwidth}
 \includegraphics[width=0.95\textwidth]{images/example_diayn_1.JPG}
-\caption{Zweidimensionale Navigation} \label{img:diayn_ex1}
+\caption{Start in der Mitte} \label{img:diayn_ex1}
 \end{subfigure}
 \begin{subfigure}{0.59\textwidth}
 \includegraphics[width=0.95\textwidth, right]{images/example_diayn_2.JPG}
-\caption{Überlagernde Fähigkeiten} \label{img:diayn_ex2}
+\caption{Zeitweilig überlagernde Fähigkeiten} \label{img:diayn_ex2}
 \end{subfigure}
-\caption{Zweidimensionale Experimente} \label{img:diayn_ex}
+\caption{Selbstständiges Finden von unterschiedlichen Pfaden im zweidimensionalen Raum} \label{img:diayn_ex}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum (Abbildung \ref{img:diayn_ex}). Hierbei stellen die farbigen Linien unterschiedliche Fähigkeiten dar. Eine Fähigkeit entspricht also im Experiment einem erkundeten Pfad innerhalb des Graphen, dessen Koordinaten den Zustandsraum beschreiben.
+Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum (Abbildung \ref{img:diayn_ex}). Hierbei stellen die farbigen Linien unterschiedliche Fähigkeiten dar. Eine Fähigkeit entspricht also im Experiment einem erkundeten Pfad innerhalb des Graphen, dessen mögliche Koordinaten den Zustandsraum beschreiben.
 
 In Abbildung \ref{img:diayn_ex1} ist somit sehr anschaulich zu erkennen, wie die Fähigkeiten unterschiedliche Zustandsräume abdecken. Es fällt außerdem auf, dass die Pfade eine starke Tendenz zu den Rändern haben. Dieses Verhalten macht durchaus Sinn, da alle in der Mitte des Koordinatensystems starten. Das logische Vorgehen zum maximalen Distanzieren der Pfade ist die Ausbreitung in unterschiedliche Richtungen, da der Abstand zwischen zwei angrenzenden Pfaden - und somit auch der zu allen anderen - nach außen hin wächst. 
 
-Einen Schritt weiter gedacht zeigt das Beispiel in Abbildung \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken.
+Einen Schritt weiter gedacht zeigt das Beispiel in Abbildung \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken. Hier stellen die schwarzen Flächen Hindernisse dar, welche nicht von Pfaden betreten werden können. Es lässt sich erkennen, dass der blaue und der grüne Pfad sobald es möglich ist nach oben bzw. unten abbiegen, um sich vom lila Pfad zu distanzieren.
 
 \smallspace
 
 % WICHTIG
-In beiden Beispielen ist gut zu erkennen, wie sich die Fähigkeiten gegenseitig ``abstoßen'' und so automatisch ein Großteil des Zustandsraums abgedeckt wird. Die erkundeten Zustände liegen außerdem gleichmäßig über dem Zustandsraum verteilt.
+In beiden Beispielen ist gut zu sehen, wie sich die Fähigkeiten gegenseitig ``abstoßen'' und so automatisch ein Großteil des Zustandsraums abgedeckt wird. Die erkundeten Zustände liegen außerdem relativ gleichmäßig über dem Zustandsraum verteilt.
 
 \smallspace
 
@@ -153,7 +153,7 @@ Nachdem nun eine Sammlung von Fähigkeiten erlernt wurde, stellt sich nun die Fr
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[width=0.5\textwidth, keepaspectratio=true, left]{images/cheetah_rewards_exp.JPG}
 \end{subfigure}
-\caption{Policy-Initialisierung} \label{img:cheetah_rewards}
+\caption{Trainingserfolg des Half Cheetah mit und ohne DIAYN (waagrecht: vergangene Zeit in Stunden, senkrecht: erhaltene Belohnung)} \label{img:cheetah_rewards}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
@@ -170,16 +170,16 @@ Nach \cite{BerliacHierachialRL2019} lernen HRL-Methoden eine Policy, welche aus 
 \begin{figure}[h]
 \begin{subfigure}{0.38\textwidth}
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle_image.JPG}
-\caption{} \label{img:cheetah_hurdle_img}
+\caption{Versuchsaufbau} \label{img:cheetah_hurdle_img}
 \end{subfigure}
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle.JPG}
-\caption{} \label{img:cheetah_hurdle_graph}
+\caption{Lernerfolg der Algorithmen} \label{img:cheetah_hurdle_graph}
 \end{subfigure}
 \begin{subfigure}{0.2\textwidth}
 \includegraphics[width=\textwidth, keepaspectratio=true]{images/cheetah_hurdle_exp.JPG}
 \end{subfigure}
-\caption{DIAYN für HRL} \label{img:cheetah_hurdle}
+\caption{Hürdenexperiment mit dem Half Cheetah (waagrecht: vergangene Zeit in Stunden, senkrecht: erhaltene Belohnung)} \label{img:cheetah_hurdle}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 

@@ -14,6 +14,10 @@ Ein MDP besitzt einen Entscheidungsträger, den so genannten \textit{Agenten} (i
 
 Wie in \ref{img:rl_cycle} dargestellt findet dieser Prozess in einem andauernden Zyklus statt. Ziel des Agenten ist es, die Summe aller Rewards, die er für die Ausführung von Aktionen bekommt, zu maximieren. Sprich der Agent will nicht nur den folgenden Reward, sondern viel eher die Gesamtheit aller Rewards, die er auf Dauer bekommt, maximieren.
 
-\subsection{TODO evtl Formeln zum MDP?}
-\label{sec:markov}
-ddd
+\subsection{Sparse Reward Problem}
+\label{sec:sparse_reward}
+Ein zentrales Problem im RL ist nach \cite{hare2019dealing} der Umgang mit Umgebungen, in denen Belohnungen nur spärlich vorhanden sind. Eine Reihe von Belohnungen, von denen die meisten nicht positiv sind, wird als \textit{Sparse Reward} bezeichnet. Diese machen es für RL-Algorithmen sehr schwer, eine Reihe von Aktionen mit einem weit entfernten Reward zu verbinden. In extremen Fällen findet der Agent eventuell gar keine Belohnung und wird so niemals lernen, wie er die gegebene Aufgabe bewältigt \cite{hare2019dealing}.
+
+Um das Problem zu umgehen müssen die Belohnungen im traditionellen RL sehr sorgfältig durchdacht sein. Dies erfordert viel Zeit und Verständnis für die Umgebung. Besser währe es also, wenn der Agent mit Sparse Rewards umgehen kann und die Ziele somit abstrakter und langfristiger definiert werden können, wodurch komplexere Aufgaben behandelt werden können \cite{hare2019dealing}.
+
+% TODO übergang

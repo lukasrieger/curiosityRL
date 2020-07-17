@@ -7,7 +7,7 @@ Die Säulen seines Werks bilden vor allem vier zentrale Prinzipien, die in \cite
 
 \paragraph{Information ist ``heilig''}
 \label{sec:Information_Heilig}
-Diesem Prinzip zufolge, muss die gesamte Abfolge an Aktionen und Beobachtungen eines Aktoren gespeichert werden. Begründet wird dies auf der Basis, dass diese Informationen die absolute Basis für jegliches Wissen darstellt, das der Aktor über seine Umgebung besitzt. 
+Diesem Prinzip zufolge muss die gesamte Abfolge an Aktionen und Beobachtungen eines Aktoren gespeichert werden. Begründet wird dies auf der Basis, dass diese Informationen die absolute Basis für jegliches Wissen darstellt, das der Aktor über seine Umgebung besitzt. 
 Grundlegend für dieses Prinzip ist hierbei die Annahme, dass es überhaupt realistisch \emph{möglich} ist, einen solchen Katalog aller Daten physisch zu speichern.
 Schmidhuber argumentiert, dass dies durchaus nicht unrealistisch sei und zeigt dies mit Hilfe eines Beispiels. 
 Für dieses sind zuerst einige Annahmen nötig: 
@@ -34,7 +34,7 @@ Die folgenden Abschnitte verwenden zur Darstellung zeitabhängiger Variablen \(Q
 
 Schmidhuber merkt im Bezug auf Kompressoren an, dass das \emph{Vorhersagen} zukünftiger Eingabewerte \(x(\tau)\) gegeben einer Historie \(h(<\tau)\) durchaus dazu verwendet werden kann, um \(h(\leq t)\) kompakt zu kodieren \cite[p.~18]{curiosity_schmidhuber}
 Ein Beispiel für einen solchen Kompressor/Prediktor findet sich in Solomonoffs universeller, induktiver Inferenz \cite[p.~18]{curiosity_schmidhuber}. 
-Dieser Ansatz versucht das Problem zu lösen, mit welcher Wahrscheinlichkeit sich von einer langen Sequenz \(T\) auf die anschließende Teilfolge \(a\) schließen lässt \cite{SOLOMONOFF19641}.
+Dieser Ansatz versucht das Problem zu lösen, mit welcher Wahrscheinlichkeit sich von einer langen Sequenz auf die anschließende Teilfolge schließen lässt \cite{SOLOMONOFF19641}.
 
 \subsubsection{Interne Symbole als Konsequenz effizienter Komprimierung}
 Schmidhuber beschreibt weiter, aufbauend auf einer generellen Historie an Beobachtungen, wie ein vorausschauendes neurales Netz, das als Kompressor fungiert, spezielle interne Repräsentierungen generiert, welche über häufig auftretende Dinge abstrahieren. Diese internen Darstellungen werden kurz \emph{Symbole} genannt \cite[p.~6]{curiosity_schmidhuber}. Ein naheliegendes Beispiel findet sich laut Schmidhuber etwa im Tag/Nacht-Rhythmus. Da der Sonnen Auf- und Untergang sich beständig wiederholt, ist es effizienter, ein spezifisches Symbol für diesen Prozess zu generieren und die Komprimierung dadurch voranzutreiben.
@@ -51,29 +51,13 @@ Das maximale Limit von \(C_l(p,h(\leq t))\) stellt laut Schmidhuber die Kolmogor
 Während eine Leistungsmessung dieser Art zwar möglich ist, muss idealerweise auch die \emph{Zeit} in Betracht gezogen werden, die ein Kompressor benötigt, um eine gegebene Historie \(h\) zu komprimieren. Andernfalls wäre ein Szenario denkbar, in der ein Kompressor zwar eine extrem kompakte Repräsentation der vorliegenden Daten produzieren könnte, für diesen Prozess aber extrem viel Rechenzeit benötigt und somit praktisch unbrauchbar wäre.
 Aus diesem Grund stellt Schmidhuber noch einen zweiten Messungsansatz vor, welcher eine Reduzierung der Rechenzeit um \(\frac{1}{2}\) äquivalent zu einer Komprimierung um 1 Bit behandelt \cite[p.~19]{curiosity_schmidhuber}
 \begin{equation}
-  C_{l\tau}(p,h(\leq t)) = l(p) + \log \tau(p, h(\leq t))
+  C_{l\tau}(p,h(\leq t)) = l(p) + \log \tau(p, h(\leq t)) 
 \end{equation}
-
-
-\paragraph{Bewertung des Kompressor Fortschritts}
-Die Leistung eines Kompressors an sich stellt allerdings nicht den Kernaspekt des Curiosity-Ansatzes dar. Ähnlich wie schon im Abschnit \ref{sec:Beauty_und_Curiosity} liegt der Fokus viel mehr auf der \emph{Änderung} dieses Werts über mehrere Zeitschritte hinweg - also der \emph{Verbesserung} des Kompressors.
-Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion auf den Fortschritt des Kompressors als 
-\begin{equation}
-  r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right]  
-\end{equation}
-, wobei \(f\) jeweils reale Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)). \cite[p.~19]{curiosity_schmidhuber}
-
-
-
-% \subsubsection{Belohnungsmaximierung und Bewertung des Kompressorfortschritts}
-% Die Abschnitte \ref{sec:Komprimierbarkeit_verbessern} und \ref{sec:Beauty_und_Curiosity} fokussieren sich hauptsächlich auf die theoretischen Konzepte der \emph{Komprimierung} von Daten und davon ausgehend, die Konzepte der \emph{subjektiven Schönheit} und \emph{subjektiven Interessantheit}.
-% Die folgende Sektion befasst sich im Gegenzug mit Schmidhubers formalisierten Implementierungen dieser Konzepte.
-
 
 
 \subsection{Funktionsweise des Agenten}
-Der in \ref{sec:Kompressor} beschriebene Kompressor stellt offensichtlich nur einen Teil des Ganzen dar. Der Agent an sich verfügt ebenfalls über einen \emph{Controller}, der auf Basis der aktuellen Beobachtung eine entsprechende Reaktion generiert.
-Im folgenden wird nun erläutert, auf welchen Prinzipien diese Aktionen gewählt und ausgeführt werden.
+Der in Kapitel \ref{sec:Kompressor} beschriebene Kompressor stellt offensichtlich nur einen Teil des Ganzen dar. Der Agent an sich verfügt ebenfalls über einen \emph{Controller}, der auf Basis der aktuellen Beobachtung eine entsprechende Reaktion generiert.
+Im Folgenden wird nun erläutert, auf welchen Prinzipien diese Aktionen gewählt und ausgeführt werden.
 
 \paragraph{Subjektive Interessantheit als Ableitung subjektiver Schönheit}
 \label{sec:Beauty_und_Curiosity}
@@ -116,18 +100,20 @@ Die Funktion \(g\) bildet hierbei die beiden reellen Werte \(r_{ext}\) und \(r_{
 Da sich der Fokus allerdings hauptsächlich auf den \emph{internen} Belohnungswert \(r_{int}(t)\) konzentriert, kann man im Folgenden zum einfacheren Verständnis stets von \(r_{ext}(t) = 0\) ausgehen.
 
 \paragraph{Bewertung des Kompressorfortschritts}
-Die Leistung eines Kompressors an sich stellt allerdings nicht den Kernaspekt des Curiosity-Ansatzes dar. Ähnlich wie schon im Abschnit \ref{sec:Beauty_und_Curiosity} liegt der Fokus viel mehr auf der \emph{Änderung} dieses Werts über mehrere Zeitschritte hinweg - also der \emph{Verbesserung} des Kompressors.
+\label{sec:KompressorProgress}
+Um den internen Belohnungswert zu berechnen, ist nicht die generelle Leistung eines Kompressors an sich von Interesse. Ähnlich wie schon im Abschnit \ref{sec:Beauty_und_Curiosity} liegt der Fokus viel mehr auf der \emph{Änderung} dieses Werts über mehrere Zeitschritte hinweg - also der \emph{Verbesserung} des Kompressors.
 Dementsprechend definiert Schmidhuber den internen Belohnungswert in Reaktion auf den Fortschritt des Kompressors als 
 \begin{equation}
-  r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right]  
+  r_{int}(t+1) = f\left[C(p(t),h(\leq t+1)), C(p(t+1),h(\leq t+1))\right] \, \text{,}
 \end{equation}
-, wobei \(f\) jeweils reelle Paare auf selbige abbildet (z.B. \(f(a,b) = a - b\)) \cite[p.~19]{curiosity_schmidhuber}.
 
+wobei es sich bei um eine Funktion handelt, welche als Eingabe jeweils die Leistung des alten und des neuen Kompressors über die Historie bis zum Zeitpunkt \(t+1\)
+erhält. Die wohl einfachste Funktion, welche potentiell für \(f\) in Frage käme, wäre beispielsweise \(f(a,b) = a - b\). Diese würde also eine positive, interne Belohnung generieren, welche direkt der diskreten Verbesserung der neuen Kompressorleistung gegenüber der alten Leistung entspricht.\cite[p.~19]{curiosity_schmidhuber}
 \subsection{Agent und Kompressor in Wechselwirkung}
 
 Aufbauend auf den bisher genannten Prinzipien von Schmidhubers neugierigen Agenten kann nun ein informeller Algorithmus beschrieben werden, der das (in diesem Fall asynchrone) Zusammenspiel zwischen dem Controller des Agenten, also dem aktiv agierenden Teil, und dem Kompressor aufzeigt.
 
-Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Controller zum Zeitpunkt \(t\).
+Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Controller zum Zeitpunkt \(t\) \cite[p.~20]{curiosity_schmidhuber}:
 
 \paragraph{Controller} Solange für  \(t\) gilt \(1 \leq t \leq T\): 
 \begin{enumerate}
@@ -144,4 +130,9 @@ Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Control
   \item Wende nun einen, dem jeweiligen Agentenziel entsprechenden, Algorithmus an, um einen besseren Kompressor \(p_{new}\) auf Basis von \(h_{old}\) zu generieren. In diesem Schritt ist zu beachten, dass \(p_{new}\) nicht zwingend \emph{optimal} sein muss.
   \item Wende, wie bereits in Schritt 2, \(p_{new}\) auf \(h_{old}\) an, um \(C(p_{new},h_{old})\) zu erhalten.
   \item Gegeben dem aktuellen Zeitpunkt \(\tau\), berechne \begin{equation} r_{int}(\tau) = f \left[C(p_{old},h_{old}),C(p_{new},h_{old})\right] \end{equation}
-\end{enumerate} \cite[p.~20]{curiosity_schmidhuber}
+\end{enumerate} 
+
+Sowohl Controller, als auch Kompressor agieren also größtenteils unabhängig voneinander. Da gerade der Kompressor die Komponente darstellt, welche den größten Arbeitsaufwand übernimmt, muss berücksichtigt werden, dass es unter Umständen zu großen zeitlichen Abständen zwischen den \emph{Aktionen} des Controllers und einer entsprechenden Belohungsantwort des Kompressors kommen kann \cite[p.~20]{curiosity_schmidhuber}.
+
+\subsection{Fazit}
+Betrachtet man Schmidhubers Konzept der \emph{Neugierde} und wie er dieses auf den Themenbereich des Reinforcement-Learning anwendet, fällt besonders die relative Simplizität ins Auge. Schmidhuber selbst beschreibt sein Konzept zuletzt als ein \emph{``surprsisngly simple algorithmic principle''}\cite[p.~16]{curiosity_schmidhuber}. Tatsächlich stellt Schmidhuber zusammen mit seinem Prinzip der Neugierigen Agenten noch eine Reihe weiterer Erklärungen vor, welche alle auf dem 
