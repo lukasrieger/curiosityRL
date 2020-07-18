@@ -2,19 +2,18 @@
 \label{sec:intro}
 Eine der nützlichsten Fähigkeiten des Menschen ist wohl seine Fähigkeit, komplexe Probleme in unterschiedlichsten Umgebungen und oftmals ohne vorheriges Wissen zu lösen.
 Diese Fähigkeit ist nicht nur für organische Lebewesen, sondern auch für künstliche Aktoren in einer Vielzahl an Szenarien äußerst nützlich.
-Ein häufig verwendeter Ansatz im Bereich der künstlichen Intelligenz stellt das ``Reinforcement Learning'' dar. Dieser Ansatz erlaubt es Agenten, diverse Aktionen im Kontext ihrer jeweiligen Umgebung zu erlernen und zu verbessern, ohne dabei notwendigerweise durch eine dritte Instanz überwacht werden zu müssen \cite{reinforcement_learning_kaelbling}. 
-Ein zentraler Problembereich stellt hierbei das Finden und Konfigurieren von ``Belohnungen'', die dem Agenten Rückmeldung über die von ihm ausgeführten Aktionen geben soll.
+Ein häufig verwendeter Ansatz im Bereich der künstlichen Intelligenz stellt das \textit{Reinforcement Learning} (RL) dar. Dieser Ansatz erlaubt es Agenten, diverse Aktionen im Kontext ihrer jeweiligen Umgebung zu erlernen und zu verbessern, ohne dabei notwendigerweise durch eine dritte Instanz überwacht werden zu müssen \cite{reinforcement_learning_kaelbling}. 
+Für den Designer eines RL-Algorithmus stellt hierbei das Finden und Konfigurieren von \textit{Belohnungen}, die dem Agenten Rückmeldung über die von ihm ausgeführten Aktionen geben sollen, einen zentraler Problembereich dar.
 
-Da nach \cite{reachability_savinov} in den meisten realen Anwendungsfällen externe Belohnungen nur spärlich oder überhaupt nicht vorhanden sind, benötigt man zusätzliche Methoden, um einen Lernfortschritt zu erzielen.
-Intuitiv lässt sich ein Lernanreiz entweder als extrinsisch, oder als intrinsisch definieren. Dient der Lernvorgang dem Erreichen eines externen, vorgegebenen Ziels, lässt sich dieser als extrinsisch kategorisieren. In diesem Falle fällt es ebenfalls leicht, die Belohnung eines Aktoren in Abhängigkeit seines Zielfortschritts zu definieren. 
+Da nach \cite{reachability_savinov} in den meisten realen Anwendungsfällen Belohnungen von der Umgebung nur spärlich oder überhaupt nicht vorhanden sind (man spricht hier von \textit{Sparse Reward}), benötigt man zusätzliche Methoden, um einen Lernfortschritt zu erzielen.
+Intuitiv lässt sich ein Lernanreiz entweder als extrinsisch, oder als intrinsisch definieren. Dient der Lernvorgang dem Erreichen eines externen, vorgegebenen Ziels, lässt sich dieser als extrinsisch kategorisieren. In diesem Falle fällt es leicht, die Belohnung eines Aktors in Abhängigkeit seines Zielfortschritts zu definieren. 
 Da in realistischen Szenarien eine solche direkte Bewertung meist nur schwer vorzunehmen ist, wäre es von Vorteil, wenn eine etwaige Belohnung ebenfalls intrinsische Anreize in Betracht ziehen würde. Von solchen intrinsischen Anreizen spricht man dann, wenn die zugrundeliegende Aktion \textit{inhärent} sinnvoll erscheint, also nicht von  externen Gegebenheiten abhängt.
 
 So scheint es etwa für den Menschen intuitiv sinnvoll, in einer unbekannten Umgebung möglichst viele unterschiedliche Vorgehensweisen auszuprobieren und sich dabei auch Strategien zu merken, welche vielleicht erst zu einem späteren Zeitpunkt Anwendung finden. Ein solches Vorgehen wäre auch bei einer künstlichen Intelligenz wünschenswert. Zu diesem Zweck existieren unterschiedliche Ansätze.
 
 In dieser Arbeit betrachten und vergleichen wir zwei Methoden, welche das klassische Reinforcement Learning in dieser Hinsicht erweitern.
-Zu diesem Zweck wird zunächst in Kapitel \ref{sec:basics} der Begriff Reinforcement Learning erklärt.
+Zu diesem Zweck werden zunächst in Kapitel~\ref{sec:basics} Markov Entscheidungsprozesse erklärt und das Sparse Reward Problem vorgestellt.
 Die anschließenden Kapitel fokussieren sich auf zwei Ansätze zur Bewertung des Lernfortschritts.
-In diesem Rahmen stellen wir in Kapitel \ref{sec:Curiosity_Schmidhuber} zuerst den Ansatz der ``Curiosity'' nach \cite{curiosity_schmidhuber} vor. 
-Wir betrachten außerdem in Kapitel \ref{sec:diversity} das Konzept der ``Diversity'' und dessen Anwendung im Reinforcement Learning nach \cite{diversity_eysenbach}.
-Diese stellen wir daraufhin in Kapitel \ref{sec:comparison} vergleichend gegenüber und gehen auf deren Gemeinsamkeiten und Kernunterschiede ein.
-
+In diesem Rahmen stellen wir in Kapitel~\ref{sec:Curiosity_Schmidhuber} zuerst den Ansatz der ``Curiosity'' nach \cite{curiosity_schmidhuber} vor. 
+Wir betrachten außerdem in Kapitel~\ref{sec:diversity} das Konzept der ``Diversity'' und dessen Anwendung im Reinforcement Learning nach \cite{diversity_eysenbach}.
+Diese stellen wir daraufhin in Kapitel~\ref{sec:comparison} vergleichend gegenüber und gehen auf deren Gemeinsamkeiten und Kernunterschiede ein. Kapitel~\ref{sec:related} beinhaltet verwandte wissenschaftliche Arbeiten. In Kapitel~\ref{sec:conclusion} schließen wir mit einem Fazit.
