@@ -7,7 +7,7 @@ Die Säulen seines Werks bilden vor allem vier zentrale Prinzipien, die in \cite
 
 \paragraph{Information ist ``heilig''}
 \label{sec:Information_Heilig}
-Diesem Prinzip zufolge muss die gesamte Abfolge an Aktionen und Beobachtungen eines Aktoren gespeichert werden. Begründet wird dies auf der Basis, dass diese Informationen die absolute Basis für jegliches Wissen darstellt, das der Aktor über seine Umgebung besitzt. 
+Diesem Prinzip zufolge muss die gesamte Abfolge an Aktionen und Beobachtungen eines Aktoren gespeichert werden. Begründet wird dies auf der Grundlage, dass diese Informationen die absolute Basis für jegliches Wissen darstellt, das der Aktor über seine Umgebung besitzt. 
 Grundlegend für dieses Prinzip ist hierbei die Annahme, dass es überhaupt realistisch \emph{möglich} ist, einen solchen Katalog aller Daten physisch zu speichern.
 Schmidhuber argumentiert, dass dies durchaus nicht unrealistisch sei und zeigt dies mit Hilfe eines Beispiels. 
 Für dieses sind zuerst einige Annahmen nötig: 
@@ -15,7 +15,7 @@ Für dieses sind zuerst einige Annahmen nötig:
     \item Ein menschliches Leben dauert im Durchschnitt nicht länger als \(3\times10^9\) Sekunden an.
     \item Ein menschliches Gehirn verfügt in etwa über \(10^{10}\) Neuronen, welche jeweils über ca. \(10^{4}\) Synapsen verfügen.
 \end{itemize}
-Nimmt man nun an, dass lediglich die halbe Hirnkapazität genutzt wird, um rohe Daten zu speichern und jede Synapse höchstens 6 bit speichern kann, so ist es durchaus möglich, die gesamten sensorischen Eindrücke eines Lebens bei einer Rate von \(10^5\, \textit{bits/s}\) zu sichern.
+Nimmt man nun an, dass lediglich die halbe Hirnkapazität genutzt wird, um rohe Daten zu speichern und jede Synapse höchstens 6 bit speichern kann, so ist es durchaus möglich, die gesamten sensorischen Eindrücke eines Lebens bei einer Rate von \(10^5\, \textit{bits}/s\) zu sichern.
 
 \paragraph{Verbessern von subjektiver Komprimierbarkeit}
 \label{sec:Komprimierbarkeit_verbessern}
@@ -41,6 +41,7 @@ Schmidhuber beschreibt weiter, aufbauend auf einer generellen Historie an Beobac
 
 
 \paragraph{Leistungsmessung eines Kompressors}
+\label{sec:Leistungs_messung}
 Zur Bewertung eines Kompressors \(p\), der eine Historie \(h(\leq t)\) zum Zeitpunkt \(t\) komprimiert, führt Schmidhuber den Wert 
 \begin{equation}
   C_l(p,h(\leq t)) = l(p)  
@@ -88,11 +89,11 @@ Schmidhuber setzt an, dass im Falle von fehlenden äußeren Belohnungen ein ents
 Es werden also genau solche Sequenzen an Aktionen vom Agenten ausgewählt, welche zukünftig den zu erwartenden Kompressionsfortschritt maximieren \cite[p.~8]{curiosity_schmidhuber}
 
 Betrachtet wird zuerst ein Agent, der seine Umgebung in konkreten Zeit Intervallen \(t = 1,2, \dots ,T\) wahrnimmt und verändert. 
-Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen reellen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reelle Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzens} 
+Nimmt man an, dass der Agent zu jedem beliebigen Zeitpunkt \(t\) einen reellen Eingabewert \(x(t)\) von der Umgebung erhält und daraufhin eine reelle Aktion \(y(t)\) ausführt, so ergibt sich als finales Ziel für den Agenten die Maximierung des zukünftigen \emph{Nutzens}:
 \begin{equation} \label{eq:objective_curiosity}
   u(t) = E_\mu \left[ \sum^T_{\tau=t+1} r(\tau) \, \Bigg\vert \, h(\leq t)\right]  
 \end{equation}
-, wobei \(r(t)\) einen zusätzlichen reellen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
+Dabei stellt \(r(t)\) einen zusätzlichen reellen Belohnungswert, \(h(t)\) das geordnete Tripel \(\left[ x(t),y(t),r(t)\right]\) und \(E_\mu(\cdot \mid \cdot)\) den bedingten Erwartungsoperator in Bezug auf eine möglicherweise unbekannte Verteilung \(\mu\) aus einer Menge \emph{M} möglicher Verteilungen darstellt. \cite[p.~17]{curiosity_schmidhuber}
 In diesem Kontext stellt \(h(\leq t)\) also die Historie bis zu dem Zeitpunkt \(t\) dar.
 
 Der Belohnungswert \(r(t)\) kann laut Schmidhuber noch weiter in eine Form von \(r(t) = g(r_{ext}(t),r_{int}(t))\) aufgeteilt werden \cite{curiosity_schmidhuber}.
@@ -126,7 +127,7 @@ Sei \(p(t)\) das Kompressorprogramm zum Zeitpunkt \(t\) und \(s(t)\) der Control
 \paragraph{Kompressor} Wir nehmen an, dass \(p_{new}\) zu Beginn dem initialen Kompressor entspricht. Für jeden Zeitschritt \(t\) durchläuft der Kompressor somit:
 \begin{enumerate}
   \item Setze \(p_{old} = p_{new}\). Setze zudem \(h_{old} = h(\leq t)\). \(h_{old}\) entspricht also der Historie am aktuellen Zeitpunkt \(t\).
-  \item Wende Kompressor \(p_{old}\) auf \(h_{old}\) an und berechne, Sektion \ref{sec:Kompressor_Leistung} entsprechend, \(C(p_{old},h_{old})\). Gerade dieser Schritt kann unter Umständen sehr zeitaufwändig sein.
+  \item Wende Kompressor \(p_{old}\) auf \(h_{old}\) an und berechne, Sektion \ref{sec:Leistungs_messung} entsprechend, \(C(p_{old},h_{old})\). Gerade dieser Schritt kann unter Umständen sehr zeitaufwändig sein.
   \item Wende nun einen, dem jeweiligen Agentenziel entsprechenden, Algorithmus an, um einen besseren Kompressor \(p_{new}\) auf Basis von \(h_{old}\) zu generieren. In diesem Schritt ist zu beachten, dass \(p_{new}\) nicht zwingend \emph{optimal} sein muss.
   \item Wende, wie bereits in Schritt 2, \(p_{new}\) auf \(h_{old}\) an, um \(C(p_{new},h_{old})\) zu erhalten.
   \item Gegeben dem aktuellen Zeitpunkt \(\tau\), berechne \begin{equation} r_{int}(\tau) = f \left[C(p_{old},h_{old}),C(p_{new},h_{old})\right] \end{equation}

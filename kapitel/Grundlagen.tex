@@ -1,6 +1,8 @@
 \section{Grundlagen}
 \label{sec:basics}
 
+Im Folgenden werden \textit{Markov Entscheidungsprozesse}, ein fundamentales Modell im RL, vorgestellt. Anschließend gehen wir kurz auf das \textit{Sparse Reward Problem} ein.
+
 \subsection{Markov Entscheidungsprozesse}
 \label{sec:reinforcement}
 \begin{figure}[h]
@@ -8,7 +10,7 @@
 \caption{Typischer Reinforcement Learning Zyklus} \label{img:rl_cycle}
 \source{\cite{deeplizard_markov_decision_processes}}
 \end{figure}
-Das wohl elementarste Modell im Reinforcement Learning (RL) sind \textit{Markov Entscheidungsprozesse} (MDPs von engl. \textit{Markov Decision Processes}), hier erklärt nach \cite{deeplizard_markov_decision_processes}.
+Das wohl elementarste Modell im RL sind Markov Entscheidungsprozesse (MDPs von engl. \textit{Markov Decision Processes}), hier erklärt nach \cite{deeplizard_markov_decision_processes}.
 
 Ein MDP besitzt einen Entscheidungsträger, den so genannten \textit{Agenten} (im Folgenden auch als \textit{Aktor} bezeichnet), welcher mit seiner Umgebung (dem \textit{Environment}) interagiert. Diese Interaktion findet sequentiell statt. In jedem Zeitschritt $ t $ verfügt der Agent über eine Repräsentation seiner Umgebung, den Zustand oder auch \textit{State} $ S_t $. Aufgrund der dem Agenten vorliegenden Information wählt dieser eine Aktion $ A_t $. Dies führt dazu, dass das Environment in einen neuen Zustand $ S_{t+1} $ überführt wird. Außerdem erhält der Aktor von der Umgebung eine Belohnung $ R_{t+1} $, den \textit{Reward}.
 

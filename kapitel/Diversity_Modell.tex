@@ -1,7 +1,7 @@
 \section{Diversity im Reinforcement Learning}
 \label{sec:diversity}
 % Ziel
-In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von Diversity im Bereich des RL Anwendung finden kann. Ziel ist, dass ein RL-Agent in einer unüberwachten Phase zunächst Fähigkeiten (\textit{Skills}) erlernt, welche das Bewältigen von Aufgaben in der darauffolgenden, überwachten Phase erleichtern sollen. Dieser Prozess geschieht ohne jegliche Belohnung von außen. 
+In diesem Kapitel beschäftigen wir uns damit, wie das Konzept von \textit{Diversity} im Bereich des RL Anwendung finden kann. Ziel ist, dass ein RL-Agent in einer unüberwachten Phase zunächst Fähigkeiten (\textit{Skills}) erlernt, welche das Bewältigen von Aufgaben in der darauffolgenden, überwachten Phase erleichtern sollen. Dieser Prozess geschieht ohne jegliche Belohnung von außen. 
 
 Dieses Kapitel stützt sich zu einem Großteil auf \textit{Diversity is all you need: Learning skills without a reward function} von \citeauthor{diversity_eysenbach} \cite{diversity_eysenbach}. Falls nicht anders angegeben, wurden die Informationen hieraus entnommen.
 
@@ -60,7 +60,6 @@ Das selbstständige Erlernen von brauchbaren Fähigkeiten, so wie in \cite{diver
 
 (1) Unterschiedliche Fähigkeiten sollten andere Zustände besuchen, sodass ihre Unterscheidbarkeit gewährleistet ist.
 
-%TODO "Paper"
 (2) Um besagte Fähigkeiten zu unterscheiden, werden nicht die Aktionen, sondern die Zustände betrachtet. Das liegt daran, dass Aktionen, welche die Umgebung nicht beeinflussen, für einen Beobachter nicht erkennbar sind. Das Paper verdeutlicht dies mit einem treffenden Beispiel: Für einen außenstehenden Betrachter ist nicht ersichtlich, wie fest ein Roboterarm eine Tasse in der Hand hält, falls sich diese nicht bewegt. Die exakten Aktionen, die für das Halten der Tasse getätigt werden, sind also letztendlich für die Unterscheidung weniger relevant als die beobachtbaren Zustände.
 
 (3) Schließlich soll erreicht werden, dass die Fähigkeiten so vielfältig (\textit{diverse}) wie möglich sind. Die Idee ist, dass unterscheidbare Skills mit einer hohen Entropie einen Zustandsraum abdecken, welcher sich weit entfernt von anderen Fähigkeiten befindet.
@@ -96,7 +95,7 @@ In \eqref{eq:objective_2} wurden die Entropien nach \eqref{eq:entropy_2} und \eq
 
 \smallspace
 
-Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Der von diesen abgedeckte Zustandsraum ist jedoch für die anderen Fähigkeiten tabu. So ist es aufgrund der implementierten Diversity sehr wahrscheinlich, dass es eine gewisse Anzahl an brauchbaren Fähigkeiten gibt, da sich diese von den unbrauchbaren möglichst unterscheiden sollen.
+Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung von verschiedenartigsten Fähigkeiten, von denen vermutlich einige nutzlos sind. Der von diesen abgedeckte Zustandsraum ist jedoch für die anderen Fähigkeiten tabu. So ist es aufgrund der implementierten Diversity sehr wahrscheinlich, dass es eine gewisse Anzahl an brauchbaren Fähigkeiten gibt, da sich diese von den unbrauchbaren möglichst stark unterscheiden sollen.
 
 %\newpage
 % Beispiele
@@ -111,13 +110,13 @@ Nach der unüberwachten Trainingsphase verfügt der Agent über eine Sammlung vo
 \includegraphics[width=0.95\textwidth, right]{images/example_diayn_2.JPG}
 \caption{Zeitweilig überlagernde Fähigkeiten} \label{img:diayn_ex2}
 \end{subfigure}
-\caption{Selbstständiges Finden von unterschiedlichen Pfaden im zweidimensionalen Raum} \label{img:diayn_ex}
+\caption{Experiment zum selbstständigen Finden von unterschiedlichen Pfaden im zweidimensionalen Raum} \label{img:diayn_ex}
 \source{\cite{diversity_eysenbach}}
 \end{figure}
 
-Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst das simple Beispiel einer zweidimensionalen Navigation in einem leeren Raum (Abbildung \ref{img:diayn_ex}). Hierbei stellen die farbigen Linien unterschiedliche Fähigkeiten dar. Eine Fähigkeit entspricht also im Experiment einem erkundeten Pfad innerhalb des Graphen, dessen mögliche Koordinaten den Zustandsraum beschreiben.
+Wie bereits mehrfach angemerkt ist das Ziel das eigenständige Erlernen von vielfältigen Fähigkeiten. \cite{diversity_eysenbach} liefert zunächst zwei simple Beispiele einer zweidimensionalen Navigation in einem leeren Raum (siehe Abbildung \ref{img:diayn_ex}). Hierbei stellen die farbigen Linien unterschiedliche Fähigkeiten dar. Eine Fähigkeit entspricht also im Experiment einem erkundeten Pfad innerhalb des Graphen. Die Menge der erreichbaren Koordinaten innerhalb des Graphen ist in diesem Experiment der Zustandsraum.
 
-In Abbildung \ref{img:diayn_ex1} ist somit sehr anschaulich zu erkennen, wie die Fähigkeiten unterschiedliche Zustandsräume abdecken. Es fällt außerdem auf, dass die Pfade eine starke Tendenz zu den Rändern haben. Dieses Verhalten macht durchaus Sinn, da alle in der Mitte des Koordinatensystems starten. Das logische Vorgehen zum maximalen Distanzieren der Pfade ist die Ausbreitung in unterschiedliche Richtungen, da der Abstand zwischen zwei angrenzenden Pfaden - und somit auch der zu allen anderen - nach außen hin wächst. 
+In Abbildung \ref{img:diayn_ex1} ist somit sehr anschaulich zu erkennen, wie die Fähigkeiten unterschiedliche Zustandsräume abdecken. Es fällt außerdem auf, dass die Pfade eine starke Tendenz zu den Rändern haben. Dieses Verhalten macht durchaus Sinn, da alle in der Mitte des Koordinatensystems starten. Das logische Vorgehen zum maximalen Distanzieren der Pfade ist die Ausbreitung in unterschiedliche Richtungen, da der Abstand zwischen zwei angrenzenden Pfaden - und somit auch der zu allen anderen - nach außen hin wächst. Anders gesagt ist am Rand am meisten ``Platz'' um sich auszubreiten.
 
 Einen Schritt weiter gedacht zeigt das Beispiel in Abbildung \ref{img:diayn_ex2}, dass sich Fähigkeiten unter Umständen auch zeitweilig überlagern können, solange sie schlussendlich unterscheidbare Zustandsräume abdecken. Hier stellen die schwarzen Flächen Hindernisse dar, welche nicht von Pfaden betreten werden können. Es lässt sich erkennen, dass der blaue und der grüne Pfad sobald es möglich ist nach oben bzw. unten abbiegen, um sich vom lila Pfad zu distanzieren.
 
@@ -191,6 +190,6 @@ Das Experiment wird außerdem mit aktuellen Reinforcement Learning Algorithmen (
 
 Wie die Abbildung \ref{img:cheetah_hurdle_graph} zeigt, schneiden diese im Experiment sehr schlecht ab und es gibt quasi keine merkliche Steigerung des Rewards. Im Gegensatz dazu zeigt der Ansatz mit dem DIAYN-Algorithmus schnell deutliche Forschritte und übertrifft merklich die anderen.
 
-Aufgrund der Knappheit von externen Rewards gestaltet sich diese Aufgabe extrem schwierig für traditionelle RL Algorithmen. Diese müssen quasi zufällig eine Hürde übersteigen, um eine Belohnung von außen zu bekommen.
+Aufgrund der Knappheit von externen Rewards gestaltet sich diese Aufgabe extrem schwierig für traditionelle RL-Algorithmen. Diese müssen quasi zufällig eine Hürde übersteigen, um eine Belohnung von außen zu bekommen.
 
 Dies zeigt nach \cite{diversity_eysenbach}, dass das eigenständige Lernen von Fähigkeiten einen effektiven Mechanismus bereit stellt, um bei Herausforderungen beim Erkunden und mit geringem externen Reward Lernerfolge zu erzielen.
